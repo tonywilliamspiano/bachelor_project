@@ -1,6 +1,17 @@
-1. Make buttons on the bottom for all parts of the song
+1. Make a controlling function for play_audio, so that play_audio doesn't have to do so much work on its own. 
+	- controlling function called 'setupSongPart(songPart) which takes the song part from the button and handles the rest.
+	- Play Audio should return when it is done, and the ended flag can be used to know whether to start the next part. 
+	- If the audio is done, make a 'switchGIFs' function to put the next ones up on screen.
+		- switchGIFs can dynamically change the source path for all of the gifs I need so I can keep the same logic throughout!
+	- Also handle playVideo() from within the script.js file. 
 
-2. 
+2. Catch exception (or whatever it is called) if the GIF is not found and just do nothing!
+
+3. Add all parts, videos and GIFs to the array so it runs beginning to end.  
+
+4. Add a pause button and functionality
+
+5. Make buttons on the bottom for all parts of the song
 
 
 
@@ -9,6 +20,4 @@
 
 
 - Version control so that the states of the arrays are always saved
-
-
 - 

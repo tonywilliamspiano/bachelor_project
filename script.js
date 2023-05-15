@@ -35,13 +35,13 @@ function playAudio(init, trackNum, songPart) {
 		return;
 	if (initialized == 1 && init == 1) {
 		// Stop all current audio processes
+		manualStopFlag = true;
 		audioElements.forEach(function (source) {
 		  source.stop();
 		});
 		audioElements = [];
 		gainNodes = [];
 		initialized = 0;
-		manualStopFlag = true;
 	}
 	if (init == 1) {
 	  // Load audio files
@@ -56,6 +56,7 @@ function playAudio(init, trackNum, songPart) {
 	  });
 	
 	var counter = 0;
+	manualStopFlag = false;
 	Promise.all(audioPromises)
 	  .then(function (buffers) {
 		for (var i = 0; i < audioFiles[songPart].length; i++) {
@@ -71,7 +72,9 @@ function playAudio(init, trackNum, songPart) {
 			  source.start(0);
 			 // Add event listener for 'ended' event
 			 source.addEventListener('ended', function() {
-				counter++;
+				if (manualStopFlag === true){	
+					counter++;
+				}
 				console.log("Counter incremented");
 				if (counter === audioFiles[songPart].length && songPart < 2 && manualStopFlag === false) {
 				  playAudio(1, -1, songPart + 1);
@@ -83,7 +86,6 @@ function playAudio(init, trackNum, songPart) {
 			  }
 			}
 		})
-		manualStopFlag = false;
 		initialized = 1;
 	}
 	else {
@@ -103,4 +105,20 @@ function playAudio(init, trackNum, songPart) {
 			gainNodes[trackNum + 6].gain.setValueAtTime(0, audioContext.currentTime);	
 		}
 	}
+}
+
+function toggleGIFs(id1, id2) {
+	  var gif1 = document.getElementById(id1);
+	  var gif2 = document.getElementById(id2);
+
+	  if (gif1.style.display === 'block') {
+		gif1.style.display = 'none';
+		gif2.style.display = 'block';
+	  } else if (gif2.style.display === 'block'){
+		gif1.style.display = 'none';
+		gif2.style.display = 'none';
+	  }
+	  else {
+		gif1.style.display = 'block';
+	  }
 }
