@@ -1,0 +1,14 @@
+1. Make buttons on the bottom for all parts of the song
+
+2. 
+
+
+
+
+
+
+
+- Version control so that the states of the arrays are always saved
+
+
+- 

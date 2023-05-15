@@ -1,0 +1,125 @@
+<html>
+	<head>
+		<style>
+			#voxVid {
+				box-shadow: 0 0 8px 8px black inset;
+			}
+			#initText {
+   			 	color: white;
+    			font-weight: bold;
+				font-size: x-large;
+  			}
+			body {
+				background-color: black;
+			}
+			.gif-container {
+			  display: inline-block;
+			  position: relative;
+			  width: 32%;
+			  height: 40vh;
+			}
+		
+			.gif-container img {
+			  position: absolute;
+			  top: 0;
+			  left: 0;
+			  width: 100%;
+			  height: 100%;
+			  display: none;
+			}
+			.video-container {
+ 				display: inline-block;
+  			  width: 32%;
+  			  height: 40vh;
+  			  overflow: hidden;
+  			}
+
+		   .video-container video {
+ 		   width: 100%;
+  	 	   height: 100%;
+  		   object-fit: cover;
+   		   object-position: center;
+            }
+		  </style>
+		  <style>
+			.gif-container,
+			.video-container {
+			  position: relative;
+			  border-radius: 20px;
+			  overflow: hidden;
+			}
+		  </style>
+	</head>
+	<body>
+		<p id="initText" onclick="playAudio(1, -1, 0); playVideo('voxVid'); setGIFs()">Click to initialize playback!</p>
+		<div class="gif-container" onclick="toggleGIFs('drums', 'drums2'); playAudio(0, 1, 0)">
+			<img id="drums" class="clickable-gif" src="content/gifs/Drums_V1_04.gif" alt="Click me to play audio">
+			<img id="drums2" class="clickable-gif" src="content/gifs/Drums_V2_04.gif" alt="Click me to play audio">
+		</div>
+		<div class="video-container">
+			<video id="voxVid" src="content/gifs/Vox_V1_04.mp4" type="video/mp4">
+			</video>
+		</div>
+		<div class="gif-container" onclick="toggleGIFs('bass', 'bass2'); playAudio(0, 0, 0)">
+			<img id="bass" class="clickable-gif" src="content/gifs/Bass_V1_04.gif" alt="Click me to play audio">
+			<img id="bass2" class="clickable-gif" src="content/gifs/Bass_V2_04.gif" alt="Click me to play audio">
+		</div>
+		<div class="gif-container" onclick="toggleGIFs('horns', 'horns2'); playAudio(0, 2, 0)">
+			<img id="horns" class="clickable-gif" src="content/gifs/Horns_V1_04.gif" alt="Click me to play audio">
+			<img id="horns2" class="clickable-gif" src="content/gifs/Horns_V2_04.gif" alt="Click me to play audio">
+		</div>
+		<div class="gif-container" onclick="toggleGIFs('git', 'git2'); playAudio(0, 3, 0)">
+			<img id="git" class="clickable-gif" src="content/gifs/Git_V1_04.gif" alt="Click me to play audio">
+			<img id="git2" class="clickable-gif" src="content/gifs/Git_V2_04.gif" alt="Click me to play audio">
+		</div>
+		<div class="gif-container" onclick="toggleGIFs('rhodes', 'rhodes2'); playAudio(0, 4, 0)">
+			<img id="rhodes" class="clickable-gif" src="content/gifs/Rhodes_V1_04.gif" alt="Click me to play audio">
+			<img id="rhodes2" class="clickable-gif" src="content/gifs/Rhodes_V2_04.gif" alt="Click me to play audio">
+		</div>
+	</body>
+	<script src="script.js"></script>
+	<script>
+	
+		function playVideo(videoId) {
+			var video = document.getElementById(videoId);
+			video.currentTime = 0;
+			video.play();
+		}
+	
+		function pauseVideo() {
+		  video.pause();
+		}
+		initText.addEventListener('click', playVideo);
+	</script>
+	  <script>
+		function toggleGIFs(id1, id2) {
+		  var gif1 = document.getElementById(id1);
+		  var gif2 = document.getElementById(id2);
+	
+		  if (gif1.style.display === 'block') {
+			gif1.style.display = 'none';
+			gif2.style.display = 'block';
+		  } else if (gif2.style.display === 'block'){
+			gif1.style.display = 'none';
+			gif2.style.display = 'none';
+		  }
+		  else {
+			gif1.style.display = 'block';
+		  }
+		}
+	  </script>
+	  <script>
+		var gifOff = ['drums2', 'bass2', 'horns2', 'rhodes2', 'git2'];
+		var gifOn = ['drums', 'bass', 'horns', 'rhodes', 'git'];
+		function setGIFs() {
+		var	gifID;
+		for (i = 0; i < gifOff.length; i++)
+		{
+			gifID = document.getElementById(gifOff[i]);
+			gifID.style.display = 'none';
+			gifID = document.getElementById(gifOn[i]);
+			gifID.style.display = 'block';
+		}
+	}
+	  </script>
+</html>
