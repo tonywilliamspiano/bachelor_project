@@ -1,4 +1,26 @@
 var audioFiles = [
+	['content/music/Bass_V1_02.mp3',
+	'content/music/Drums_V1_02.mp3',
+	'content/music/Horns_V1_02.mp3',
+	'content/music/Git_V1_02.mp3',
+	'content/music/Rhodes_V1_02.mp3',
+	'content/music/Vox_V1_02.mp3',
+	'content/music/Bass_V2_02.mp3',
+	'content/music/Drums_V2_02.mp3',
+	'content/music/Horns_V2_02.mp3',
+	'content/music/Git_V2_02.mp3',
+	'content/music/Rhodes_V2_02.mp3'],
+	['content/music/Bass_V1_03.mp3',
+	'content/music/Drums_V1_03.mp3',
+	'content/music/Horns_V1_03.mp3',
+	'content/music/Git_V1_03.mp3',
+	'content/music/Rhodes_V1_03.mp3',
+	'content/music/Vox_V1_03.mp3',
+	'content/music/Bass_V2_03.mp3',
+	'content/music/Drums_V2_03.mp3',
+	'content/music/Horns_V2_03.mp3',
+	'content/music/Git_V2_03.mp3',
+	'content/music/Rhodes_V2_03.mp3'],
 	['content/music/Bass_V1_04.mp3',
 	'content/music/Drums_V1_04.mp3',
 	'content/music/Horns_V1_04.mp3',
@@ -20,126 +42,201 @@ var audioFiles = [
 	'content/music/Drums_V2_05.mp3',
 	'content/music/Horns_V2_05.mp3',
 	'content/music/Git_V2_05.mp3',
-	'content/music/Rhodes_V2_05.mp3']];
+	'content/music/Rhodes_V2_05.mp3'],
+	['content/music/Bass_V1_06.mp3',
+	'content/music/Drums_V1_06.mp3',
+	'content/music/Horns_V1_06.mp3',
+	'content/music/Git_V1_06.mp3',
+	'content/music/Rhodes_V1_06.mp3',
+	'content/music/Vox_V1_06.mp3',
+	'content/music/Bass_V2_06.mp3',
+	'content/music/Drums_V2_06.mp3',
+	'content/music/Horns_V2_06.mp3',
+	'content/music/Git_V2_06.mp3',
+	'content/music/Rhodes_V2_06.mp3'],
+	['content/music/Bass_V1_07.mp3',
+	'content/music/Drums_V1_07.mp3',
+	'content/music/Horns_V1_07.mp3',
+	'content/music/Git_V1_07.mp3',
+	'content/music/Rhodes_V1_07.mp3',
+	'content/music/Vox_V1_07.mp3',
+	'content/music/Bass_V2_07.mp3',
+	'content/music/Drums_V2_07.mp3',
+	'content/music/Horns_V2_07.mp3',
+	'content/music/Git_V2_07.mp3',
+	'content/music/Rhodes_V2_07.mp3']];
 
+
+var videoFiles = [
+	'content/gifs/Vox_V1_02.mp4',
+	'content/gifs/Vox_V1_03.mp4',
+	'content/gifs/Vox_V1_04.mp4',
+	'content/gifs/Vox_V1_05.mp4',
+	'content/gifs/Vox_V1_06.mp4',
+	'content/gifs/Vox_V1_07.mp4'	
+]
 var audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+//pushing one array for each song part
 var audioElements = [];
+audioElements.push([]);
+audioElements.push([]);
+audioElements.push([]);
+audioElements.push([]);
+audioElements.push([]);
+audioElements.push([]);
+
+//pushing one array for each song part
 var gainNodes = [];
+gainNodes.push([]);
+gainNodes.push([]);
+gainNodes.push([]);
+gainNodes.push([]);
+gainNodes.push([]);
+gainNodes.push([]);
+
 var initialized = 0;
 var manualStopFlag = false;
-var playing = 0;
-var counter = 0;
+var part_playing = -1;
+var ended = 0;
 
 //Receives the songpart and does the rest of the work
-function setUpSongPart(songPart, reset)
+async function setUpSongPart(songPart)
 {
-	if (reset == 1 && playing == 1){
-		console.log("audio stopped!");
-		stopAudio();
-		playing = 0;
+	ended = 0;
+	if (initialized == 0)
+	{
+		//wait for setAudio to complete its promises
+		await setAudio(1, -1, 0);
+  		await setAudio(1, -1, 1);
+		await setAudio(1, -1, 2);
+		await setAudio(1, -1, 3);
+		await setAudio(1, -1, 4);
+		await setAudio(1, -1, 5);
+	}
+	if (part_playing != -1){
+		await stopAudio(part_playing);
+		await setAudio(1, -1, part_playing);
 	}
 	else {
 		manualStopFlag = false;
 	}
-	setAudio(1, -1, songPart);
-	playAudio();
-	
-	if (manualStopFlag === false && counter >= 10)
+	console.log("ready to play songpart ", songPart);
+	playAudio(songPart);
+	playVideo('voxVid', songPart)
+	await waitForEnd();
+	console.log("Manual stop flag is ", manualStopFlag);
+	if (manualStopFlag == false)
 	{
-		setUpSongPart(songPart + 1, 1);
+		songPart = songPart + 1;
+		console.log("NEW SONGPART is ", songPart);
+		setUpSongPart(songPart);
 	}
+	manualStopFlag = false;
 }
 
-function playAudio(){
-	console.log("made to here");
-	for (var i = 0; i < audioElements.length; i++) {
-		console.log("adding event listener ", i);
-		audioElements[i].addEventListener('ended', function () {
-		  endedTracks++;
-		  console.log('Audio playback ended');
-		  
-		  if (endedTracks === audioElements.length) {
-			// All tracks have ended
+function waitForEnd() {
+	return new Promise(function(resolve) {
+		function checkEnded() {
+			if (ended === 1) {
+			  resolve();
+			} else {
+			  setTimeout(checkEnded, 500);
+			}
+		  }
+		  checkEnded();
+	});
+  }
+
+function playAudio(songPart){
+	part_playing = songPart;
+	var counter = 0;
+	for (var i = 0; i < audioElements[songPart].length; i++)
+	{
+		audioElements[songPart][i].start(0);
+	}
+	for (var i = 0; i < audioElements[songPart].length; i++) {
+		// console.log("adding event listener ", i);
+		audioElements[songPart][i].addEventListener('ended', function () {
+		  counter++;		  
+		  if (counter === audioElements[songPart].length) {
+			ended = 1;
 			console.log('All tracks have ended');
-			// Perform any actions you need to after all tracks have finished
 		  }
 		});
-	  }
+	}
 	//add Event Listener here to check for ended audio
 }
 
-function stopAudio(){
+function stopAudio(part_playing){
+	return new Promise(function (resolve, reject){
 	manualStopFlag = true;
-	for (i = 0; i < audioElements.length; i++)
-	{
-		audioElements[i].stop();
-	}
-	audioElements = [];
-	gainNodes = [];
-	initialized = 0;
+		for (i = 0; i < audioElements[part_playing].length; i++)
+		{
+			audioElements[part_playing][i].stop();
+		}
+		console.log("audio stopped!");
+		audioElements[part_playing] = [];
+		gainNodes[part_playing] = [];
+		console.log("Audios were stopped and reset!")
+		resolve();
+	});
 }
 
 function setAudio(init, trackNum, songPart) {
-	if (init == 1) {
-	  // Load audio files
-	  var audioPromises = audioFiles[songPart].map(function (file) {
-		return fetch(file)
-		  .then(function (response) {
-			return response.arrayBuffer();
-		  })
-		  .then(function (buffer) {
-			return audioContext.decodeAudioData(buffer);
+		return new Promise(function (resolve, reject) {
+		  // Load audio files
+		  var audioPromises = audioFiles[songPart].map(function (file) {
+			return fetch(file)
+			  .then(function (response) {
+				return response.arrayBuffer();
+			  })
+			  .then(function (buffer) {
+				return audioContext.decodeAudioData(buffer);
+			  });
 		  });
-	  });
-	Promise.all(audioPromises)
-	  .then(function (buffers) {
-		for (var i = 0; i < audioFiles[songPart].length; i++) {
-			  var source = audioContext.createBufferSource();
-			  source.buffer = buffers[i];
+	
+		  Promise.all(audioPromises)
+			.then(function (buffers) {
+			  for (var i = 0; i < audioFiles[songPart].length; i++) {
+				var source = audioContext.createBufferSource();
+				source.buffer = buffers[i];
+	
+				var gainNode = audioContext.createGain();
+				gainNode.connect(audioContext.destination);
+				source.connect(gainNode);
 
-			  var gainNode = audioContext.createGain();
-			  source.connect(gainNode);
-			  gainNode.connect(audioContext.destination);
-			  audioElements.push(source);
-			  gainNodes.push(gainNode);
-			  
-			  if (i > 5){
-				gainNodes[i].gain.setValueAtTime(0, audioContext.currentTime);	
+				audioElements[songPart].push(source);
+				gainNodes[songPart].push(gainNode);
+	
+				if (i > 5) {
+				  gainNodes[songPart][i].gain.setValueAtTime(0, audioContext.currentTime);
+				//   console.log("setting gain for track: ", i);
+				}
 			  }
-			  playing = 1;
-			  source.start(0);
-			  //add listeners to tell when the audio playback is finished
-			  console.log("adding event listener ", i);
-			  source.addEventListener('ended', function () {
-		  		counter++;
-				  console.log('Audio playback ended');
-		  
-				  if (counter >= 10) {
-					// All tracks have ended
-					console.log('All tracks have ended');
-					// Perform any actions you need to after all tracks have finished
-		  }
+			  initialized = 1;
+			  resolve(); // Resolve the promise when audio loading is complete
+			})
+			.catch(reject); // Reject the promise if there's an error
 		});
-			}
-		})
-		initialized = 1;
+}
+
+function setGainNodes(songPart, trackNum)
+{
+	if (gainNodes[part_playing][trackNum].gain.value == 1)
+	{
+		gainNodes[part_playing][trackNum].gain.setValueAtTime(0, audioContext.currentTime);
+		gainNodes[part_playing][trackNum + 6].gain.setValueAtTime(1, audioContext.currentTime);	
 	}
-	else {
-		if (gainNodes[trackNum].gain.value == 1)
-		{
-			gainNodes[trackNum].gain.setValueAtTime(0, audioContext.currentTime);
-			gainNodes[trackNum + 6].gain.setValueAtTime(1, audioContext.currentTime);	
-		}
-		else if (gainNodes[trackNum + 6].gain.value == 1)
-		{
-			gainNodes[trackNum].gain.setValueAtTime(0, audioContext.currentTime);
-			gainNodes[trackNum + 6].gain.setValueAtTime(0, audioContext.currentTime);	
-		}
-		else
-		{
-			gainNodes[trackNum].gain.setValueAtTime(1, audioContext.currentTime);
-			gainNodes[trackNum + 6].gain.setValueAtTime(0, audioContext.currentTime);	
-		}
+	else if (gainNodes[part_playing][trackNum + 6].gain.value == 1)
+	{
+		gainNodes[part_playing][trackNum].gain.setValueAtTime(0, audioContext.currentTime);
+		gainNodes[part_playing][trackNum + 6].gain.setValueAtTime(0, audioContext.currentTime);	
+	}
+	else
+	{
+		gainNodes[part_playing][trackNum].gain.setValueAtTime(1, audioContext.currentTime);
+		gainNodes[part_playing][trackNum + 6].gain.setValueAtTime(0, audioContext.currentTime);	
 	}
 }
 
@@ -157,4 +254,11 @@ function toggleGIFs(id1, id2) {
 	  else {
 		gif1.style.display = 'block';
 	  }
+}
+
+function playVideo(videoId, i) {
+	var video = document.getElementById(videoId);
+	video.src = videoFiles[i];
+	video.currentTime = 0;
+	video.play();
 }

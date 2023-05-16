@@ -21,3 +21,16 @@
 
 - Version control so that the states of the arrays are always saved
 - 
+
+
+
+IDEA - link up the GIFs with the Audios so that their states are always saved.
+With the gain nodes it should be possible to save whether the audios are
+muted or not. 
+	- could use a tmp array to initialize new audios while stopping old ones? 
+
+
+- Make an initialize function so that all audio files are loaded at beginning
+- Make song parts 0 and 1 buttons work and appear as buttons on bottom of screen.
+	- Make them work when clicked so the program doesn't crash
+- Add logic to make automatic playback happen when the audios are finished. 

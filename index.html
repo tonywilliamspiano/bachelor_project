@@ -1,6 +1,15 @@
 <html>
 	<head>
 		<style>
+			.button-container {
+			  display: inline-block;
+			}
+		
+			.button-container button {
+			  margin-right: 10px;
+			}
+		</style>
+		<style>
 			#voxVid {
 				box-shadow: 0 0 8px 8px black inset;
 			}
@@ -18,7 +27,6 @@
 			  width: 32%;
 			  height: 40vh;
 			}
-		
 			.gif-container img {
 			  position: absolute;
 			  top: 0;
@@ -33,7 +41,6 @@
   			  height: 40vh;
   			  overflow: hidden;
   			}
-
 		   .video-container video {
  		   width: 100%;
   	 	   height: 100%;
@@ -51,9 +58,7 @@
 		  </style>
 	</head>
 	<body>
-		<p id="initText" onclick="setUpSongPart(0, 1); playVideo('voxVid'); setGIFs()">Click to initialize playback!</p>
-		<p id="initText" onclick="setUpSongPart(0, 1); playVideo('voxVid'); setGIFs()">Click for song part 0</p>	
-		<div class="gif-container" onclick="toggleGIFs('drums', 'drums2'); setAudio(0, 1, 0)">
+		<div class="gif-container" onclick="toggleGIFs('drums', 'drums2'); setGainNodes(1, 1)">
 			<img id="drums" class="clickable-gif" src="content/gifs/Drums_V1_04.gif" alt="Click me to play audio">
 			<img id="drums2" class="clickable-gif" src="content/gifs/Drums_V2_04.gif" alt="Click me to play audio">
 		</div>
@@ -61,31 +66,35 @@
 			<video id="voxVid" src="content/gifs/Vox_V1_04.mp4" type="video/mp4">
 			</video>
 		</div>
-		<div class="gif-container" onclick="toggleGIFs('bass', 'bass2'); setAudio(0, 0, 0)">
+		<div class="gif-container" onclick="toggleGIFs('bass', 'bass2'); setGainNodes(0, 0)">
 			<img id="bass" class="clickable-gif" src="content/gifs/Bass_V1_04.gif" alt="Click me to play audio">
 			<img id="bass2" class="clickable-gif" src="content/gifs/Bass_V2_04.gif" alt="Click me to play audio">
 		</div>
-		<div class="gif-container" onclick="toggleGIFs('git', 'git2'); setAudio(0, 3, 0)">
+		<div class="gif-container" onclick="toggleGIFs('git', 'git2'); setGainNodes(0, 3)">
 			<img id="git" class="clickable-gif" src="content/gifs/Git_V1_04.gif" alt="Click me to play audio">
 			<img id="git2" class="clickable-gif" src="content/gifs/Git_V2_04.gif" alt="Click me to play audio">
 		</div>
-		<div class="gif-container" onclick="toggleGIFs('rhodes', 'rhodes2'); setAudio(0, 4, 0)">
+		<div class="gif-container" onclick="toggleGIFs('rhodes', 'rhodes2'); setGainNodes(0, 4)">
 			<img id="rhodes" class="clickable-gif" src="content/gifs/Rhodes_V1_04.gif" alt="Click me to play audio">
 			<img id="rhodes2" class="clickable-gif" src="content/gifs/Rhodes_V2_04.gif" alt="Click me to play audio">
 		</div>
-		<div class="gif-container" onclick="toggleGIFs('horns', 'horns2'); setAudio(0, 2, 0)">
+		<div class="gif-container" onclick="toggleGIFs('horns', 'horns2'); setGainNodes(0, 2)">
 			<img id="horns" class="clickable-gif" src="content/gifs/Horns_V1_04.gif" alt="Click me to play audio">
 			<img id="horns2" class="clickable-gif" src="content/gifs/Horns_V2_04.gif" alt="Click me to play audio">
+		</div>
+		<br>
+		</br>
+		<div class="button-container">
+			<button type="button" onclick="setUpSongPart(0); setGIFs()">Verse 1</button>
+			<button type="button" onclick="setUpSongPart(1); setGIFs()">Verse 2</button>
+			<button type="button" onclick="setUpSongPart(2); setGIFs()">Chorus 1</button>
+			<button type="button" onclick="setUpSongPart(3); setGIFs()">Verse 3</button>
+			<button type="button" onclick="setUpSongPart(4); setGIFs()">Chorus 2</button>
+			<button type="button" onclick="setUpSongPart(5); setGIFs()">Bridge</button>
 		</div>
 	</body>
 	<script src="script.js"></script>
 	<script>
-		function playVideo(videoId) {
-			var video = document.getElementById(videoId);
-			video.currentTime = 0;
-			video.play();
-		}
-	
 		function pauseVideo() {
 		  video.pause();
 		}
