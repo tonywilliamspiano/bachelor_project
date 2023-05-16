@@ -22,27 +22,64 @@ var audioFiles = [
 	'content/music/Git_V2_05.mp3',
 	'content/music/Rhodes_V2_05.mp3']];
 
-  var audioContext = new (window.AudioContext || window.webkitAudioContext)();
-  var audioElements = [];
-  var gainNodes = [];
-  var initialized = 0;
-  var manualStopFlag = false;
+var audioContext = new (window.AudioContext || window.webkitAudioContext)();
+var audioElements = [];
+var gainNodes = [];
+var initialized = 0;
+var manualStopFlag = false;
+var playing = 0;
+var counter = 0;
 
-function playAudio(init, trackNum, songPart) {
-	console.log("Init is: ", init);
-	console.log("trackNum is: ", trackNum);
-	if (songPart > 2)
-		return;
-	if (initialized == 1 && init == 1) {
-		// Stop all current audio processes
-		manualStopFlag = true;
-		audioElements.forEach(function (source) {
-		  source.stop();
-		});
-		audioElements = [];
-		gainNodes = [];
-		initialized = 0;
+//Receives the songpart and does the rest of the work
+function setUpSongPart(songPart, reset)
+{
+	if (reset == 1 && playing == 1){
+		console.log("audio stopped!");
+		stopAudio();
+		playing = 0;
 	}
+	else {
+		manualStopFlag = false;
+	}
+	setAudio(1, -1, songPart);
+	playAudio();
+	
+	if (manualStopFlag === false && counter >= 10)
+	{
+		setUpSongPart(songPart + 1, 1);
+	}
+}
+
+function playAudio(){
+	console.log("made to here");
+	for (var i = 0; i < audioElements.length; i++) {
+		console.log("adding event listener ", i);
+		audioElements[i].addEventListener('ended', function () {
+		  endedTracks++;
+		  console.log('Audio playback ended');
+		  
+		  if (endedTracks === audioElements.length) {
+			// All tracks have ended
+			console.log('All tracks have ended');
+			// Perform any actions you need to after all tracks have finished
+		  }
+		});
+	  }
+	//add Event Listener here to check for ended audio
+}
+
+function stopAudio(){
+	manualStopFlag = true;
+	for (i = 0; i < audioElements.length; i++)
+	{
+		audioElements[i].stop();
+	}
+	audioElements = [];
+	gainNodes = [];
+	initialized = 0;
+}
+
+function setAudio(init, trackNum, songPart) {
 	if (init == 1) {
 	  // Load audio files
 	  var audioPromises = audioFiles[songPart].map(function (file) {
@@ -54,36 +91,35 @@ function playAudio(init, trackNum, songPart) {
 			return audioContext.decodeAudioData(buffer);
 		  });
 	  });
-	
-	var counter = 0;
-	manualStopFlag = false;
 	Promise.all(audioPromises)
 	  .then(function (buffers) {
 		for (var i = 0; i < audioFiles[songPart].length; i++) {
 			  var source = audioContext.createBufferSource();
 			  source.buffer = buffers[i];
-  
+
 			  var gainNode = audioContext.createGain();
 			  source.connect(gainNode);
 			  gainNode.connect(audioContext.destination);
-  
 			  audioElements.push(source);
 			  gainNodes.push(gainNode);
-			  source.start(0);
-			 // Add event listener for 'ended' event
-			 source.addEventListener('ended', function() {
-				if (manualStopFlag === true){	
-					counter++;
-				}
-				console.log("Counter incremented");
-				if (counter === audioFiles[songPart].length && songPart < 2 && manualStopFlag === false) {
-				  playAudio(1, -1, songPart + 1);
-				}
-			  });
-
+			  
 			  if (i > 5){
 				gainNodes[i].gain.setValueAtTime(0, audioContext.currentTime);	
 			  }
+			  playing = 1;
+			  source.start(0);
+			  //add listeners to tell when the audio playback is finished
+			  console.log("adding event listener ", i);
+			  source.addEventListener('ended', function () {
+		  		counter++;
+				  console.log('Audio playback ended');
+		  
+				  if (counter >= 10) {
+					// All tracks have ended
+					console.log('All tracks have ended');
+					// Perform any actions you need to after all tracks have finished
+		  }
+		});
 			}
 		})
 		initialized = 1;
