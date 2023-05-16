@@ -64,7 +64,18 @@ var audioFiles = [
 	'content/music/Drums_V2_07.mp3',
 	'content/music/Horns_V2_07.mp3',
 	'content/music/Git_V2_07.mp3',
-	'content/music/Rhodes_V2_07.mp3']];
+	'content/music/Rhodes_V2_07.mp3'],
+	['content/music/Bass_V1_08.mp3',
+	'content/music/Drums_V1_08.mp3',
+	'content/music/Horns_V1_08.mp3',
+	'content/music/Git_V1_08.mp3',
+	'content/music/Rhodes_V1_08.mp3',
+	'content/music/Vox_V1_08.mp3',
+	'content/music/Bass_V2_08.mp3',
+	'content/music/Drums_V2_08.mp3',
+	'content/music/Horns_V2_08.mp3',
+	'content/music/Git_V2_08.mp3',
+	'content/music/Rhodes_V2_08.mp3']];
 
 
 var videoFiles = [
@@ -73,7 +84,8 @@ var videoFiles = [
 	'content/gifs/Vox_V1_04.mp4',
 	'content/gifs/Vox_V1_05.mp4',
 	'content/gifs/Vox_V1_06.mp4',
-	'content/gifs/Vox_V1_07.mp4'	
+	'content/gifs/Vox_V1_07.mp4',	
+	'content/gifs/Vox_V1_08.mp4'	
 ]
 var audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
@@ -85,9 +97,11 @@ audioElements.push([]);
 audioElements.push([]);
 audioElements.push([]);
 audioElements.push([]);
+audioElements.push([]);
 
 //pushing one array for each song part
 var gainNodes = [];
+gainNodes.push([]);
 gainNodes.push([]);
 gainNodes.push([]);
 gainNodes.push([]);
@@ -113,6 +127,7 @@ async function setUpSongPart(songPart)
 		await setAudio(1, -1, 3);
 		await setAudio(1, -1, 4);
 		await setAudio(1, -1, 5);
+		await setAudio(1, -1, 6);
 	}
 	if (part_playing != -1){
 		await stopAudio(part_playing);
