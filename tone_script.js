@@ -25,7 +25,7 @@ var timeArray = [3, 4, 5, 6];
 
 var players = [];
 var volumes = [];
-const startTime = Tone.now() + 1;
+var initialized = 0;
 
 // Create Tone.Player instances for each audio file
 for (let i = 0; i < audioFiles.length; i++) {
@@ -41,9 +41,10 @@ for (let i = 0; i < audioFiles.length; i++) {
 
 // Function to schedule audio playback
 function scheduleAudio(startTime, startPoint) {
+	console.log("AUDIO SCHEDULED");
 	Tone.Transport.scheduleOnce(() => {
 		for (let i = 0; i < players.length; i++) {
-			players[i].start(startTime, startPoint);
+			players[i].start(0, startPoint);
 		}
 	}, startTime);
 }
@@ -56,10 +57,11 @@ function stopAudio() {
 	}
 }
 
-// Stop all audio files
-function toneStart() {
-	
-}
+//start tone on user action
+function toneStart(songPart) {
+	Tone.start();
+	setUpSongPart(songPart);
+  }
 
 // Function to mute a specific track
 function muteTrack(trackIndex) {
@@ -93,6 +95,12 @@ function muteSwitch(trackIndex)
 //Receives the songpart and does the rest of the work
 function setUpSongPart(songPart)
 {
+	if (initialized == 1)
+	{
+		console.log("AUDIO stopped");
+		stopAudio();
+	}
+	initialized = 1;
 	for (let i = 0; i < players.length; i++) {
 		if (i > 5)
 		{
@@ -102,10 +110,9 @@ function setUpSongPart(songPart)
 
 	// Start the Tone.Transport
 	Tone.Transport.start();
-
+	var startTime = Tone.now() + 1;
 	//schedule audio for playback
-	scheduleAudio(startTime, 3);
-
+	scheduleAudio(startTime, 0);
 }
 
 function toggleGIFs(id1, id2) {
