@@ -1,13 +1,77 @@
 <html>
+	<link rel="icon" href="data:,">
 	<head>
 		<style>
-			.button-container {
-			  display: inline-block;
+		#overlay {
+		  position: fixed;
+		  top: 0;
+		  left: 0;
+		  width: 100%;
+		  height: 100%;
+		  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
+		  display: flex;
+		  align-items: center;
+		  justify-content: center;
+		  z-index: 9999; /* Ensure the overlay is on top */
+		  cursor: pointer;
+		}
+		#overlayText {
+			position: absolute;
+  			top: 50%;
+  			left: 50%;
+  			transform: translate(-50%, -50%);
+			font-family: "Helvetica Neue", Arial, sans-serif;
+  			font-weight: bold;
+  			font-size: 78px;
+  			color: rgb(163, 159, 159);
+		}
+			#loading-screen {
+			  position: fixed;
+			  top: 0;
+			  left: 0;
+			  width: 100%;
+			  height: 100%;
+			  background-color: #000000;
+			  z-index: 9999;
+			  display: flex;
+			  align-items: center;
+			  justify-content: center;
 			}
+
+			.loading-message {
+			  font-family: "Helvetica Neue", Arial, sans-serif;
+  			  font-weight: bold;
+			  text-align: center;
+			  font-size: 78px;
+			  color: rgb(163, 159, 159);
+			}
+			.cool-button {
+			  padding: 10px 20px; /* Adjust padding to increase button size */
+			  font-size: 16px; /* Adjust font size to increase button size */
+			  background-color: #618888; /* Set background color */
+			  color: #fff; /* Set text color */
+			  border: none; /* Remove border */
+			  border-radius: 4px; /* Add rounded corners */
+			  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add box shadow */
+			  cursor: pointer; /* Add hover effect */
+			}
+			.active {
+				border: 3px solid #ff00ff; /* Example: Add a cool, lit-up border */
+  				box-shadow: 0 0 10px #ff00ff; /* Example: Add a glowing effect */
+			}
+
+		.cool-button:hover {
+		  background-color: #0056b3; /* Set background color on hover */
+		}
+		.button-container {
+		  padding-top: 40px;
+		  display: flex;
+		  justify-content: center;
+		}
 		
-			.button-container button {
-			  margin-right: 10px;
-			}
+		.button-container button {
+		  margin-right: 10px;
+		}
 		</style>
 		<style>
 			#voxVid {
@@ -58,63 +122,56 @@
 		  </style>
 	</head>
 	<body>
-		<div class="gif-container" onclick="toggleGIFs('drums', 'drums2'); muteSwitch(1)">
-			<img id="drums" class="clickable-gif" src="content/gifs/Drums_V1_04.gif" alt="Click me to play audio">
-			<img id="drums2" class="clickable-gif" src="content/gifs/Drums_V2_04.gif" alt="Click me to play audio">
+		<div id="overlay" style="display: none;">
+			<div id="overlayText">Click to Play</div>
 		</div>
-		<div class="video-container">
-			<video id="voxVid" src="content/gifs/Vox_V1_04.mp4" type="video/mp4">
-			</video>
-		</div>
-		<div class="gif-container" onclick="toggleGIFs('bass', 'bass2'); muteSwitch(0)">
-			<img id="bass" class="clickable-gif" src="content/gifs/Bass_V1_04.gif" alt="Click me to play audio">
-			<img id="bass2" class="clickable-gif" src="content/gifs/Bass_V2_04.gif" alt="Click me to play audio">
-		</div>
-		<div class="gif-container" onclick="toggleGIFs('git', 'git2'); muteSwitch(3)">
-			<img id="git" class="clickable-gif" src="content/gifs/Git_V1_04.gif" alt="Click me to play audio">
-			<img id="git2" class="clickable-gif" src="content/gifs/Git_V2_04.gif" alt="Click me to play audio">
-		</div>
-		<div class="gif-container" onclick="toggleGIFs('rhodes', 'rhodes2'); muteSwitch(4)">
-			<img id="rhodes" class="clickable-gif" src="content/gifs/Rhodes_V1_04.gif" alt="Click me to play audio">
-			<img id="rhodes2" class="clickable-gif" src="content/gifs/Rhodes_V2_04.gif" alt="Click me to play audio">
-		</div>
-		<div class="gif-container" onclick="toggleGIFs('horns', 'horns2'); muteSwitch(2)">
-			<img id="horns" class="clickable-gif" src="content/gifs/Horns_V1_04.gif" alt="Click me to play audio">
-			<img id="horns2" class="clickable-gif" src="content/gifs/Horns_V2_04.gif" alt="Click me to play audio">
-		</div>
-		<br>
-		</br>
-		<div class="button-container">
-			<button type="button" onclick="toneStart(0); setGIFs()">Verse 1</button>
-			<button type="button" onclick="toneStart(1); setGIFs()">Verse 2</button>
-			<button type="button" onclick="toneStart(2); setGIFs()">Chorus 1</button>
-			<button type="button" onclick="toneStart(3); setGIFs()">Verse 3</button>
-			<button type="button" onclick="toneStart(4); setGIFs()">Chorus 2</button>
-			<button type="button" onclick="toneStart(5); setGIFs()">Bridge</button>
-			<button type="button" onclick="toneStart(6); setGIFs()">Instrumental</button>
-			<button type="button" onclick="toneStart(); setGIFs()">tonestart</button>
-
+		<div id="loading-screen">
+			<div class="loading-message">
+			  <p>Loading audios...</p>
+			</div>
+		  </div>
+		<div id="content" style="display: none;">  
+			<div class="gif-container" onclick="toggleGIFs('drums', 'drums2'); muteSwitch(1)">
+				<img id="drums" class="clickable-gif" src="content/gifs/Drums_V1_04.gif" alt="Click me to play audio">
+				<img id="drums2" class="clickable-gif" src="content/gifs/Drums_V2_04.gif" alt="Click me to play audio">
+			</div>
+			<div class="video-container">
+				<video id="voxVid" src="/content/Vox.mp4" type="video/mp4" preload="auto">
+				</video>
+			</div>
+			<div class="gif-container" onclick="toggleGIFs('bass', 'bass2'); muteSwitch(0)">
+				<img id="bass" class="clickable-gif" src="content/gifs/Bass_V1_01.gif" alt="Click me to play audio">
+				<img id="bass2" class="clickable-gif" src="content/gifs/Bass_V2_01.gif" alt="Click me to play audio">
+			</div>
+			<div class="gif-container" onclick="toggleGIFs('git', 'git2'); muteSwitch(3)">
+				<img id="git" class="clickable-gif" src="content/gifs/Git_V1_04.gif" alt="Click me to play audio">
+				<img id="git2" class="clickable-gif" src="content/gifs/Git_V2_04.gif" alt="Click me to play audio">
+			</div>
+			<div class="gif-container" onclick="toggleGIFs('rhodes', 'rhodes2'); muteSwitch(4)">
+				<img id="rhodes" class="clickable-gif" src="content/gifs/Rhodes_V1_01.gif" alt="Click me to play audio">
+				<img id="rhodes2" class="clickable-gif" src="content/gifs/Rhodes_V2_01.gif" alt="Click me to play audio">
+			</div>
+			<div class="gif-container" onclick="toggleGIFs('horns', 'horns2'); muteSwitch(2)">
+				<img id="horns" class="clickable-gif" src="content/gifs/Horns_V1_01.gif" alt="Click me to play audio">
+				<img id="horns2" class="clickable-gif" src="content/gifs/Horns_V2_04.gif" alt="Click me to play audio">
+			</div>
+			<br>
+			</br>
+			<div class="button-container">
+				<button id="button0" class="cool-button" onclick="toneStart(0)">Intro</button>
+				<button id="button1" class="cool-button" onclick="toneStart(1)">Verse 1</button>
+				<button id="button2" class="cool-button" onclick="toneStart(2)">Verse 2</button>
+				<button id="button3" class="cool-button" onclick="toneStart(3)">Chorus 1</button>
+				<button id="button4" class="cool-button" onclick="toneStart(4)">Verse 3</button>
+				<button id="button5" class="cool-button" onclick="toneStart(5)">Chorus 2</button>
+				<button id="button6" class="cool-button" onclick="toneStart(6)">Bridge</button>
+				<button id="button7" class="cool-button" onclick="toneStart(7)">Instrumental</button>
+				<button id="button8" class="cool-button" onclick="toneStart(8)">Outro</button>
+				<button id="pauseButton" class="cool-button" onclick="pauseTracks()">Pause/Play</button>
+				<!-- <button type="button" onclick="pauseTracks()">PAUSE</button> -->
+			</div>
 		</div>
 	</body>
 	<script src="node_modules/tone/build/Tone.js"></script>
 	<script src="tone_script.js"></script>
-	<script>
-		function pauseVideo() {
-		  video.pause();
-		}
-	</script>
-	  <script>
-		var gifOff = ['drums2', 'bass2', 'horns2', 'rhodes2', 'git2'];
-		var gifOn = ['drums', 'bass', 'horns', 'rhodes', 'git'];
-		function setGIFs() {
-		var	gifID;
-		for (i = 0; i < gifOff.length; i++)
-		{
-			gifID = document.getElementById(gifOff[i]);
-			gifID.style.display = 'none';
-			gifID = document.getElementById(gifOn[i]);
-			gifID.style.display = 'block';
-		}
-	}
-	  </script>
 </html>
