@@ -1,14 +1,14 @@
 var audioFiles = ['content/Bass_V1.mp3',
-'content/Drums_V1.mp3',	
-'content/Horns_V1.mp3',	
-'content/Git_V1.mp3',	
-'content/Rhodes_V1.mp3',
-'content/Vox.mp3',
 'content/Bass_V2.mp3',
+'content/Drums_V1.mp3',	
 'content/Drums_V2.mp3',	
-'content/Horns_V2.mp3',	
+'content/Git_V1.mp3',	
 'content/Git_V2.mp3',	
-'content/Rhodes_V2.mp3'];
+'content/Horns_V1.mp3',	
+'content/Horns_V2.mp3',	
+'content/Rhodes_V1.mp3',
+'content/Rhodes_V2.mp3',
+'content/Vox.mp3'];
 
 var instrumentArrays = [
 	["Bass_V1_01.gif", "Bass_V1_02.gif", "Bass_V1_03.gif", "Bass_V1_04.gif", "Bass_V1_05.gif", "Bass_V1_06.gif", "Bass_V1_07.gif", "Bass_V1_08.gif", "Bass_V1_09.gif"],
@@ -19,7 +19,7 @@ var instrumentArrays = [
 	["Git_V2_01.gif", "Git_V2_02.gif", "Git_V2_03.gif", "Git_V2_04.gif", "Git_V2_05.gif", "Git_V2_06.gif", "Git_V2_07.gif", "Git_V2_08.gif", "Git_V2_09.gif", "Git_V2_10.gif"],
 	["Horns_V1_01.gif", "Horns_V1_02.gif", "Horns_V1_03.gif", "Horns_V1_04.gif", "Horns_V1_05.gif", "Horns_V1_06.gif", "Horns_V1_07.gif", "Horns_V1_08.gif", "black.jpeg"],
 	["black.jpeg", "Horns_V2_02.gif", "Horns_V2_03.gif", "Horns_V2_04.gif", "Horns_V2_05.gif", "Horns_V2_06.gif", "Horns_V2_07.gif", "Horns_V2_08.gif", "black.jpeg"],
-	["Rhodes_V1_01.gif", "Rhodes_V1_02.gif", "Rhodes_V1_03.gif", "Rhodes_V1_04.gif", "Rhodes_V1_05.gif", "Rhodes_V1_06.gif", "Rhodes_V1_07.gif", "Rhodes_V1_08.gif", "Rhodes_V1_09.gif"],
+	["Rhodes_V1_01.gif", "Rhodes_V1_01.gif", "Rhodes_V1_01.gif", "Rhodes_V1_01.gif", "Rhodes_V1_01.gif", "Rhodes_V1_01.gif", "Rhodes_V1_01.gif", "Rhodes_V1_01.gif", "Rhodes_V1_01.gif"],
 	["Rhodes_V2_01.gif", "Rhodes_V2_02.gif", "Rhodes_V2_03.gif", "Rhodes_V2_04.gif", "Rhodes_V2_05.gif", "Rhodes_V2_06.gif", "Rhodes_V2_07.gif", "Rhodes_V2_08.gif", "Rhodes_V2_09.gif"],
 ];
 
@@ -35,6 +35,8 @@ var instrumentNames = [
 	"rhodes",
 	"rhodes2"
 ];
+
+var currentGIFs = [];
 
 var saveStates = Array.from({ length: 9 }, () => Array(10).fill(0));
 
@@ -85,10 +87,9 @@ function putGIFs()
 	var newGIF;
 	for (i = 0; i < instrumentNames.length; i++)
 	{
-		console.log("instrument name is: ", instrumentNames[i])
 		newGIF = document.getElementById(instrumentNames[i]);
-		console.log("/content/gifs/" + instrumentArrays[i][currentSongPart]);
 		newGIF.src = "/content/gifs/" + instrumentArrays[i][currentSongPart];
+		currentGIFs.push(newGIF);
 	}
 }
 
@@ -127,10 +128,13 @@ function goToSavedState(index){
 	for (i = 0; i < saveStates[index].length; i++)
 	{
 		if (saveStates[index][i] == 0) {
-			muteTrack[i];
+			console.log('muting track', i);
+			muteTrack(i);
+			currentGIFs[i].style.display = "none";
 		}
 		else {
-			unmuteTrack[i];
+			unmuteTrack(i);
+			currentGIFs[i].style.display = "block";
 		}
 	}
 }
@@ -148,7 +152,6 @@ function startCounter(index) {
 		activateButton(index + 1);
 		currentSongPart = index + 1;
 		putGIFs();
-		saveNewState(index);
 		goToSavedState(index + 1);
 	  }
 	}, 100);
@@ -183,12 +186,14 @@ function toneStart(songPart) {
 // Function to mute a specific track
 function muteTrack(trackIndex) {
 	console.log("track muted: ", trackIndex);
+	saveStates[currentSongPart][trackIndex] = 0;
 	volumes[trackIndex].gain.value = 0; // Set the gain value to 0 to mute the track
  }
   
   // Function to unmute a specific track
 function unmuteTrack(trackIndex) {
 	console.log("track unmuted: ", trackIndex);
+	saveStates[currentSongPart][trackIndex] = 1;
 	volumes[trackIndex].gain.value = 1; // Set the gain value to 1 to unmute the track
 }
 
@@ -197,11 +202,11 @@ function muteSwitch(trackIndex)
 	if (volumes[trackIndex].gain.value == 1)
 	{
 		muteTrack(trackIndex);
-		unmuteTrack(trackIndex + 6);
+		unmuteTrack(trackIndex + 1);
 	}
-	else if (volumes[trackIndex + 6].gain.value == 1)
+	else if (volumes[trackIndex + 1].gain.value == 1)
 	{
-		muteTrack(trackIndex + 6);
+		muteTrack(trackIndex + 1);
 	}
 	else
 	{
@@ -213,14 +218,9 @@ function muteSwitch(trackIndex)
 function setUpSongPart(songPart)
 {
 	putGIFs();
-	if (initialized == 1)
-	{
-		console.log("AUDIO stopped");
-		// stopAudio();
-	}
-	else {
+	if (initialized == 0) {
 		for (let i = 0; i < players.length; i++) {
-			if (i > 5)
+			if (i % 2 == 1)
 			{
 				muteTrack(i);
 			}
@@ -228,6 +228,15 @@ function setUpSongPart(songPart)
 				unmuteTrack(i);
 			}
 		}
+		//initializing saved states to correct values
+		for (let i = 0; i < saveStates.length; i++) {
+			const subArray = saveStates[i];
+			for (let j = 0; j < subArray.length; j++) {
+			  if (j % 2 == 0) {
+				subArray[j] = 1;
+			  }
+			}
+		  }
 		initialized = 1;
 	}
 	//activate the corresponding song part button
