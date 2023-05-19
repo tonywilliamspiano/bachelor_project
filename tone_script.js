@@ -22,7 +22,6 @@ var instrumentArrays = [
 	["Rhodes_V1_01.gif", "Rhodes_V1_01.gif", "Rhodes_V1_01.gif", "Rhodes_V1_01.gif", "Rhodes_V1_01.gif", "Rhodes_V1_01.gif", "Rhodes_V1_01.gif", "Rhodes_V1_01.gif", "Rhodes_V1_01.gif"],
 	["Rhodes_V2_01.gif", "Rhodes_V2_02.gif", "Rhodes_V2_03.gif", "Rhodes_V2_04.gif", "Rhodes_V2_05.gif", "Rhodes_V2_06.gif", "Rhodes_V2_07.gif", "Rhodes_V2_08.gif", "Rhodes_V2_09.gif"],
 ];
-
 var instrumentNames = [
 	"bass",
 	"bass2",
@@ -35,14 +34,9 @@ var instrumentNames = [
 	"rhodes",
 	"rhodes2"
 ];
-
 var currentGIFs = [];
-
 var saveStates = Array.from({ length: 9 }, () => Array(10).fill(0));
-
-
 var startTimes = [1.75, 26, 58, 79.5, 101, 138, 159, 202, 226];
-
 var players = [];
 var volumes = [];
 var initialized = 0;
@@ -50,7 +44,7 @@ var intervalID;
 var counter = 0;
 var currentSongPart = 0;
 
-// Load audio files
+  // Load audio files
 var audioPromise = Promise.all(audioFiles.map(file => Tone.loaded(file)));
 
 // Load video file
@@ -59,8 +53,19 @@ var videoPromise = new Promise((resolve, reject) => {
 	voxVid.onloadeddata = resolve;
 	voxVid.onerror = reject;
   });
-  
-  Promise.all([audioPromise, videoPromise])
+
+var buttons = [];
+buttons.push(document.getElementById("button0"));
+buttons.push(document.getElementById("button1"));
+buttons.push(document.getElementById("button2"));
+buttons.push(document.getElementById("button3"));
+buttons.push(document.getElementById("button4"));
+buttons.push(document.getElementById("button5"));
+buttons.push(document.getElementById("button6"));
+buttons.push(document.getElementById("button7"));
+buttons.push(document.getElementById("button8"));
+
+Promise.all([audioPromise, videoPromise])
 	.then(() => {
 	  // Create Tone.Player instances for each audio file
 	  for (let i = 0; i < audioFiles.length; i++) {
@@ -80,7 +85,7 @@ var videoPromise = new Promise((resolve, reject) => {
 	.catch(error => {
 	  // Handle error if any of the files fail to load
 	  console.error("Error loading files:", error);
-	});
+});
 
 function putGIFs()
 {
@@ -93,125 +98,67 @@ function putGIFs()
 	}
 }
 
-var buttons = [];
-
-buttons.push(document.getElementById("button0"));
-buttons.push(document.getElementById("button1"));
-buttons.push(document.getElementById("button2"));
-buttons.push(document.getElementById("button3"));
-buttons.push(document.getElementById("button4"));
-buttons.push(document.getElementById("button5"));
-buttons.push(document.getElementById("button6"));
-buttons.push(document.getElementById("button7"));
-buttons.push(document.getElementById("button8"));
-
 function activateButton(index) {
 	// Remove "active" class from all buttons
-	for (var i = 0; i < buttons.length; i++) {
+	for (var i = 0; i < buttons.length; i++)
 	  buttons[i].classList.remove("active");
-	}
 	if (intervalID)
-	{
 		clearInterval(intervalID);
-	}
-  
 	// Add "active" class to the clicked button
-	buttons[index].classList.add("active");
-  
+	buttons[index].classList.add("active");  
 	// Start seconds counter at the corresponding start_time
 	counter = 0;
 	startCounter(index, 0);
-  }
+}
 
-function goToSavedState(index){
+//Return to the user's saved state at the songpart 'index'
+function goToSavedState(index)
+{
 	console.log("Here");
 	for (i = 0; i < saveStates[index].length; i++)
 	{
-		if (saveStates[index][i] == 0) {
+		if (saveStates[index][i] == 0) 
+		{
 			console.log('muting track', i);
 			muteTrack(i);
 			currentGIFs[i].style.display = "none";
 		}
-		else {
+		else 
+		{
 			unmuteTrack(i);
 			currentGIFs[i].style.display = "block";
 		}
 	}
 }
 
+//Counts in 0.1 second increments to enable smooth changing of song parts
 function startCounter(index) {
-	intervalID = setInterval(function() {
-	  counter += 0.1;
-	//   console.log(counter);
-  
-	  // Check if the counter reached the desired duration
-	  if (counter >= startTimes[index + 1] - startTimes[index]) {
-		clearInterval(intervalID);
-		// Perform any action you want when the counter reaches the start_time
-		console.log("Counter reached next state");
-		activateButton(index + 1);
-		currentSongPart = index + 1;
-		putGIFs();
-		goToSavedState(index + 1);
-	  }
+	intervalID = setInterval(function() 
+	{
+		counter += 0.1;  
+		if (counter >= startTimes[index + 1] - startTimes[index]) 
+		{
+			clearInterval(intervalID);
+			console.log("Counter reached next state");
+			activateButton(index + 1);
+			currentSongPart = index + 1;
+			putGIFs();
+			goToSavedState(index + 1);
+		  }
 	}, 100);
 }
 
-// Function to schedule audio playback
-function scheduleAudio(startTime, startPoint) {
-	console.log("AUDIO SCHEDULED");
-  
-	for (let i = 0; i < players.length; i++) {
-	  var elapsed = Tone.now() - startTime;
-	  const playerStartTime = startTime + elapsed;
-	  players[i].start(playerStartTime, startPoint);
-	  
-	  if (i === players.length - 1) {
-		playVideo('voxVid', startPoint + 0.15);
-	  }
-	}
-}
-
 //start tone on user action
-function toneStart(songPart) {
+function toneStart(songPart) 
+{
 	currentSongPart = songPart;
+	putGIFs();
 	Tone.start();
 	if (initialized == 1)
 	{
 		goToSavedState(songPart);
 	}
 	setUpSongPart(songPart);
-  }
-
-// Function to mute a specific track
-function muteTrack(trackIndex) {
-	console.log("track muted: ", trackIndex);
-	saveStates[currentSongPart][trackIndex] = 0;
-	volumes[trackIndex].gain.value = 0; // Set the gain value to 0 to mute the track
- }
-  
-  // Function to unmute a specific track
-function unmuteTrack(trackIndex) {
-	console.log("track unmuted: ", trackIndex);
-	saveStates[currentSongPart][trackIndex] = 1;
-	volumes[trackIndex].gain.value = 1; // Set the gain value to 1 to unmute the track
-}
-
-function muteSwitch(trackIndex)
-{
-	if (volumes[trackIndex].gain.value == 1)
-	{
-		muteTrack(trackIndex);
-		unmuteTrack(trackIndex + 1);
-	}
-	else if (volumes[trackIndex + 1].gain.value == 1)
-	{
-		muteTrack(trackIndex + 1);
-	}
-	else
-	{
-		unmuteTrack(trackIndex);
-	}
 }
 
 //Receives the songpart and does the rest of the work
@@ -246,6 +193,53 @@ function setUpSongPart(songPart)
 	var startTime = Tone.now() + 0.1;
 	//schedule audio for playback
 	scheduleAudio(startTime, startTimes[songPart], songPart);
+}
+
+// Function to schedule audio playback
+function scheduleAudio(startTime, startPoint) 
+{
+	console.log("AUDIO SCHEDULED");
+  
+	for (let i = 0; i < players.length; i++) {
+	  var elapsed = Tone.now() - startTime;
+	  const playerStartTime = startTime + elapsed;
+	  players[i].start(playerStartTime, startPoint);
+	  
+	  if (i === players.length - 1) {
+		playVideo('voxVid', startPoint + 0.15);
+	  }
+	}
+}
+
+// Function to mute a specific track
+function muteTrack(trackIndex) {
+	console.log("track muted: ", trackIndex);
+	saveStates[currentSongPart][trackIndex] = 0;
+	volumes[trackIndex].gain.value = 0; // Set the gain value to 0 to mute the track
+ }
+  
+  // Function to unmute a specific track
+function unmuteTrack(trackIndex) {
+	console.log("track unmuted: ", trackIndex);
+	saveStates[currentSongPart][trackIndex] = 1;
+	volumes[trackIndex].gain.value = 1; // Set the gain value to 1 to unmute the track
+}
+
+function muteSwitch(trackIndex)
+{
+	if (volumes[trackIndex].gain.value == 1)
+	{
+		muteTrack(trackIndex);
+		unmuteTrack(trackIndex + 1);
+	}
+	else if (volumes[trackIndex + 1].gain.value == 1)
+	{
+		muteTrack(trackIndex + 1);
+	}
+	else
+	{
+		unmuteTrack(trackIndex);
+	}
 }
 
 function toggleGIFs(id1, id2) {
@@ -305,14 +299,14 @@ function pauseTracks() {
 
 function playVideo(videoId, startTime) {
 	var video = document.getElementById(videoId);
-	video.currentTime = startTime + 0.15;
+	video.currentTime = startTime + 0.12;
 	video.play();
-  }
+}
 
 function pauseVideo(videoId) {
 	var video = document.getElementById(videoId);
 	video.pause();
-  }
+}
 
 function showContent() {
 	var loadingScreen = document.getElementById("loading-screen");
@@ -333,3 +327,76 @@ overlay.addEventListener("click", function() {
   overlay.style.display = "none";
   toneStart(0);
 });
+
+function exportArray() {
+	// Generate a unique code
+	var uniqueCode = generateUniqueCode();
+  
+	// Get the array of 0's and 1's
+	var array = saveStates;
+  
+	// Create a data object to save
+	var data = {
+	  uniqueCode: uniqueCode,
+	  array: array
+	};
+  
+	// Convert the data object to JSON
+	var jsonData = JSON.stringify(data);
+  
+	// Create a download link for the JSON file
+	var link = document.createElement('a');
+	link.href = 'data:text/json;charset=utf-8,' + encodeURIComponent(jsonData);
+	link.download = uniqueCode + '.json';
+	link.click();
+  }
+
+  function generateUniqueCode() {
+	// Generate a unique code using a suitable algorithm or library
+	// For simplicity, let's generate a random code of 8 characters
+	var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+	var code = '';
+	for (var i = 0; i < 8; i++) {
+	  code += characters.charAt(Math.floor(Math.random() * characters.length));
+	}
+	return code;
+  }
+
+var formElement = document.getElementById('myForm');
+var inputElement = document.getElementById('myInput');
+var	jsonFile;
+
+inputElement.addEventListener('keydown', function(event) {
+  if (event.key === 'Enter') {
+    event.preventDefault(); // Prevent the default newline behavior
+    var inputValue = inputElement.value;
+    console.log('Input Value:', inputValue);
+    inputElement.value = ''; // Clear the input field
+	loadData(inputValue);
+  }
+});
+
+function loadData(inputValue) {
+	var fileName = inputValue + '.json';  
+	console.log("file name is ", fileName);
+	// Load the JSON file
+	fetch(fileName)
+	  .then(function(response) {
+		if (!response.ok) {
+		  throw new Error('Failed to load JSON file');
+		}
+		return response.json();
+	  })
+	  .then(function(data) {
+		saveStates = data.array;
+		initialized = 1;
+		var oText = document.getElementById("overlayText");
+		oText.textContent = "Saved State Loaded, Click to Play";
+		showContent();
+		putGIFs();
+		pauseTracks();
+	  })
+	  .catch(function(error) {
+		console.log(error);
+	  });
+}
