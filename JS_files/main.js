@@ -58,7 +58,7 @@ function startCounter(index) {
 }
 
 //start tone on user action
-function toneStart(songPart) 
+function toneStart(songPart, tutorial) 
 {
 	currentSongPart = songPart;
 	putGIFs();
@@ -67,14 +67,13 @@ function toneStart(songPart)
 	{
 		goToSavedState(songPart);
 	}
-	setUpSongPart(songPart);
+	setUpSongPart(songPart, tutorial);
 }
 
 //Receives the songpart and does the rest of the work
-function setUpSongPart(songPart)
+function setUpSongPart(songPart, tutorial)
 {
-	putGIFs();
-	if (initialized == 0) {
+	if (initialized == 0 && tutorial == 0) {
 		for (let i = 0; i < players.length; i++) {
 			if (i % 2 == 1)
 			{
@@ -88,13 +87,19 @@ function setUpSongPart(songPart)
 		for (let i = 0; i < saveStates.length; i++) {
 			const subArray = saveStates[i];
 			for (let j = 0; j < subArray.length; j++) {
-			  if (j % 2 == 0) {
+				if (j % 2 == 0) {
 				subArray[j] = 1;
-			  }
+				}
 			}
-		  }
-		initialized = 1;
+		}
+	initialized = 1;
 	}
+	putGIFs();
+	goToSavedState(songPart);
+	for (i = 0; i < saveStates.length; i++)
+    {
+        console.log(saveStates[i]);
+    }
 	//activate the corresponding song part button
 	activateButton(songPart);
 	// Start the Tone.Transport

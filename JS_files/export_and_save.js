@@ -1,14 +1,12 @@
-var saveStates = Array.from({ length: 9 }, () => Array(10).fill(0));
+var saveStates = Array.from({ length: 9 }, () => Array(11).fill(0));
 
 //Return to the user's saved state at the songpart 'index'
 function goToSavedState(index)
 {
-	console.log("Here");
 	for (i = 0; i < saveStates[index].length; i++)
 	{
 		if (saveStates[index][i] == 0) 
 		{
-			console.log('muting track', i);
 			muteTrack(i);
 			currentGIFs[i].style.display = "none";
 		}

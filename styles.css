@@ -145,10 +145,10 @@ body {
   margin: 0;
   padding: 0;
   user-select: none;
-     display: inline-block;
-    width: 32%;
-    height: 40vh;
-    overflow: hidden;
+  display: inline-block;
+  width: 32%;
+  height: 40vh;
+  overflow: hidden;
 }
 .video-container video {
   width: 100%;
