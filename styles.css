@@ -66,6 +66,7 @@
     user-select: none;
     padding-top: 40px;
     display: flex;
+    flex-direction: row;
     justify-content: center;
   }
   
@@ -81,6 +82,7 @@
           font-size: x-large;
         }
       body {
+          margin: 0;
           background-color: black;
           user-select: none;
       }
@@ -92,6 +94,8 @@
         height: 40vh;
       }
       .gif-container img {
+        margin: 0;
+        padding: 0;
         user-select: none;
         position: absolute;
         top: 0;
@@ -101,6 +105,8 @@
         display: none;
       }
       .video-container {
+        margin: 0;
+        padding: 0;
         user-select: none;
            display: inline-block;
           width: 32%;

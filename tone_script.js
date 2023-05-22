@@ -36,7 +36,7 @@ var instrumentNames = [
 ];
 var currentGIFs = [];
 var saveStates = Array.from({ length: 9 }, () => Array(10).fill(0));
-var startTimes = [1.75, 26, 58, 79.5, 101, 138, 159, 202, 226];
+var startTimes = [1.75, 26, 58, 79.5, 101.3, 138.6, 160, 202, 226];
 var players = [];
 var volumes = [];
 var initialized = 0;
@@ -299,7 +299,7 @@ function pauseTracks() {
 
 function playVideo(videoId, startTime) {
 	var video = document.getElementById(videoId);
-	video.currentTime = startTime + 0.12;
+	video.currentTime = startTime - 0.5;
 	video.play();
 }
 
@@ -317,6 +317,7 @@ function showContent() {
 	// Show the content
 	overlay.style.display = "block";
 	content.style.display = "block";
+	updateImageParameters();
 	resetGIFs();
   }
 
@@ -400,3 +401,45 @@ function loadData(inputValue) {
 		console.log(error);
 	  });
 }
+
+function changeButtons() {
+	// Get the button container element
+	var buttonContainer = document.getElementById("bContainer");
+
+	// Set the CSS properties
+	buttonContainer.style.backgroundColor = "transparent";
+	buttonContainer.style.textAlign = "left";
+	buttonContainer.style.position = "fixed";
+	buttonContainer.style.top = "0";
+	buttonContainer.style.left = "0";
+	// buttonContainer.style.right = "0";
+	buttonContainer.style.flexDirection = "column";
+}
+
+function updateImageParameters() {
+    var container = document.getElementById('content');
+    var gifCont = document.getElementsByClassName('gif-container');
+	
+	if (container.offsetHeight > container.offsetWidth) {
+		console.log("HELLO!");
+		// Change parameters for height > width
+		for (let i = 0; i < gifCont.length; i++)
+		{
+	  		gifCont[i].style.width = '48%';
+      		gifCont[i].style.height = '28vh';
+		}
+    } else {
+		changeButtons();
+		for (let i = 0; i < gifCont.length; i++)
+		{
+	  		gifCont[i].style.width = '32%';
+      		gifCont[i].style.height = '40vh';
+		}
+    }
+  }
+
+// Call the function initially
+updateImageParameters();
+
+  // Add event listener for window resize
+  window.addEventListener('resize', updateImageParameters);
