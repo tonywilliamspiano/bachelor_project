@@ -1,36 +1,16 @@
-1. Make a controlling function for play_audio, so that play_audio doesn't have to do so much work on its own. 
-	- controlling function called 'setupSongPart(songPart) which takes the song part from the button and handles the rest.
-	- Play Audio should return when it is done, and the ended flag can be used to know whether to start the next part. 
-	- If the audio is done, make a 'switchGIFs' function to put the next ones up on screen.
-		- switchGIFs can dynamically change the source path for all of the gifs I need so I can keep the same logic throughout!
-	- Also handle playVideo() from within the script.js file. 
 
-2. Catch exception (or whatever it is called) if the GIF is not found and just do nothing!
+- Debug initialization problems - Why does it sometimes not work? 
 
-3. Add all parts, videos and GIFs to the array so it runs beginning to end.  
+- Make video/audio files smaller and still working
 
-4. Add a pause button and functionality
+- Make portrait view have the current part as well as a next part / previous part button
 
-5. Make buttons on the bottom for all parts of the song
+- Handle video and audio syncronization - make program wait if needed 
 
+- Organize the JavaScript code so that it looks nice and is easy to code
 
-
-
-
-
-
-- Version control so that the states of the arrays are always saved
-- 
-
-
-
-IDEA - link up the GIFs with the Audios so that their states are always saved.
-With the gain nodes it should be possible to save whether the audios are
-muted or not. 
-	- could use a tmp array to initialize new audios while stopping old ones? 
-
-
-- Make an initialize function so that all audio files are loaded at beginning
-- Make song parts 0 and 1 buttons work and appear as buttons on bottom of screen.
-	- Make them work when clicked so the program doesn't crash
-- Add logic to make automatic playback happen when the audios are finished. 
+- Make optional tutorial (screen with two big buttons, "Tutorial" or "I know what I'm doing")
+	- "click to change instruments" while one instrument is playing.
+	- "add more instruments" to add two more instruments
+	- "Change song parts"
+	- (Keep only the buttons active that are currently in use)

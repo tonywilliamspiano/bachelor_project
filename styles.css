@@ -12,117 +12,132 @@
     cursor: pointer;
     opacity: 1;
     transition: opacity 1.5s ease-in-out;
-  }
-  #overlayText {
-      position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-      font-family: "Helvetica Neue", Arial, sans-serif;
-        font-weight: bold;
-        font-size: 78px;
-        color: rgb(163, 159, 159);
-  }
-      #loading-screen {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: #000000;
-        z-index: 9999;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
+}
+#overlayText {
+    position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    font-family: "Helvetica Neue", Arial, sans-serif;
+      font-weight: bold;
+      font-size: 78px;
+      color: rgb(163, 159, 159);
+}
+#loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #000000;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-      .loading-message {
-        font-family: "Helvetica Neue", Arial, sans-serif;
-          font-weight: bold;
-        text-align: center;
-        font-size: 78px;
-        color: rgb(163, 159, 159);
-      }
-      .cool-button {
-        padding: 10px 20px; /* Adjust padding to increase button size */
-        font-size: 16px; /* Adjust font size to increase button size */
-        background-color: #618888; /* Set background color */
-        color: #fff; /* Set text color */
-        border: none; /* Remove border */
-        border-radius: 4px; /* Add rounded corners */
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add box shadow */
-        cursor: pointer; /* Add hover effect */
-      }
-      .active {
-          border: 3px solid #ff00ff; /* Example: Add a cool, lit-up border */
-            box-shadow: 0 0 10px #ff00ff; /* Example: Add a glowing effect */
-      }
+#pauseButton {
+  position: fixed;
+  right: 0;
+  top: 0;
+  background-color: rgb(46, 64, 64);
+}
 
-  .cool-button:hover {
-    background-color: #0056b3; /* Set background color on hover */
+#content {
+  display: flex;
+  width: 100%;
+}
+
+.loading-message {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+    font-weight: bold;
+  text-align: center;
+  font-size: 78px;
+  color: rgb(163, 159, 159);
+}
+
+.cool-button {
+  padding: 10px 20px; /* Adjust padding to increase button size */
+  font-size: 16px; /* Adjust font size to increase button size */
+  background-color: transparent; /* Set background color */
+  color: #fff; /* Set text color */
+  border: none; /* Remove border */
+  border-radius: 4px; /* Add rounded corners */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add box shadow */
+  cursor: pointer; /* Add hover effect */
+}
+
+.active {
+    border: 3px solid #ff00ff; /* Example: Add a cool, lit-up border */
+      box-shadow: 0 0 10px #ff00ff; /* Example: Add a glowing effect */
+}
+
+.cool-button:hover {
+  background-color: #266a91; /* Set background color on hover */
+  user-select: none;
+}
+.button-container {
+  user-select: none;
+  padding-top: 40px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.button-container button {
+  margin-right: 10px;
+}
+#voxVid {
+    box-shadow: 0 0 8px 8px black inset;
+}
+#initText {
+        color: white;
+    font-weight: bold;
+    font-size: x-large;
+  }
+body {
+    margin: 0;
+    background-color: black;
     user-select: none;
-  }
-  .button-container {
-    user-select: none;
-    padding-top: 40px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-  }
-  
-  .button-container button {
-    margin-right: 10px;
-  }
-      #voxVid {
-          box-shadow: 0 0 8px 8px black inset;
-      }
-      #initText {
-              color: white;
-          font-weight: bold;
-          font-size: x-large;
-        }
-      body {
-          margin: 0;
-          background-color: black;
-          user-select: none;
-      }
-      .gif-container {
-        user-select: none;
-        display: inline-block;
-        position: relative;
-        width: 32%;
-        height: 40vh;
-      }
-      .gif-container img {
-        margin: 0;
-        padding: 0;
-        user-select: none;
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        display: none;
-      }
-      .video-container {
-        margin: 0;
-        padding: 0;
-        user-select: none;
-           display: inline-block;
-          width: 32%;
-          height: 40vh;
-          overflow: hidden;
-        }
-     .video-container video {
-      width: 100%;
-        height: 100%;
-       object-fit: cover;
-        object-position: center;
-      }
-      .gif-container,
-      .video-container {
-        user-select: none;
-        position: relative;
-        border-radius: 20px;
-        overflow: hidden;
-      }
+}
+.gif-container {
+  user-select: none;
+  display: inline-block;
+  position: relative;
+  width: 32%;
+  height: 40vh;
+}
+.gif-container img {
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+}
+.video-container {
+  margin: 0;
+  padding: 0;
+  user-select: none;
+     display: inline-block;
+    width: 32%;
+    height: 40vh;
+    overflow: hidden;
+}
+.video-container video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.gif-container,
+.video-container {
+  user-select: none;
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+}

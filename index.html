@@ -17,7 +17,7 @@
 				<img id="drums" class="clickable-gif" src="content/gifs/Drums_V1_04.gif" alt="Click me to play audio">
 				<img id="drums2" class="clickable-gif" src="content/gifs/Drums_V2_04.gif" alt="Click me to play audio">
 			</div>
-			<div class="video-container">
+			<div id="vidCont" class="video-container">
 				<video id="voxVid" src="/content/Vox.mp4" type="video/mp4" preload="auto">
 				</video>
 			</div>
@@ -49,12 +49,12 @@
 				<button id="button6" class="cool-button" onclick="toneStart(6)">Bridge</button>
 				<button id="button7" class="cool-button" onclick="toneStart(7)">Instrumental</button>
 				<button id="button8" class="cool-button" onclick="toneStart(8)">Outro</button>
-				<button id="pauseButton" class="cool-button" onclick="pauseTracks()">Pause/Play</button>
 				<button id="saveButton" class="cool-button" onclick="exportArray()">Export Audio</button>
 				<form id="myForm">
 					<input type="text" id="myInput" placeholder="Enter your code">
 				</form>				  
 			</div>
+			<button id="pauseButton" class="cool-button" onclick="pauseTracks()">Pause/Play</button>
 		</div>
 	</body>
 	<script src="node_modules/tone/build/Tone.js"></script>

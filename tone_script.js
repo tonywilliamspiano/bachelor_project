@@ -10,6 +10,16 @@ var audioFiles = ['content/Bass_V1.mp3',
 'content/Rhodes_V2.mp3',
 'content/Vox.mp3'];
 
+var songPartNames = ['Intro',
+'Verse 1',
+'Verse 2',	
+'Chorus 1',	
+'Verse 3',	
+'Chorus 2',	
+'Bridge',	
+'Instrumental',	
+'Outro'];
+
 var instrumentArrays = [
 	["Bass_V1_01.gif", "Bass_V1_02.gif", "Bass_V1_03.gif", "Bass_V1_04.gif", "Bass_V1_05.gif", "Bass_V1_06.gif", "Bass_V1_07.gif", "Bass_V1_08.gif", "Bass_V1_09.gif"],
 	["Bass_V2_01.gif", "Bass_V2_02.gif", "Bass_V2_03.gif", "Bass_V2_04.gif", "Bass_V2_05.gif", "Bass_V2_06.gif", "Bass_V2_07.gif", "Bass_V2_08.gif", "Bass_V2_09.gif"],
@@ -77,10 +87,11 @@ Promise.all([audioPromise, videoPromise])
   
 		player.connect(volume);
 		volume.connect(Tone.Destination);
+		console.log("player loaded: ", i);
 	  }
   
 	  // All audio files and the video file are loaded, hide the loading screen and show the content
-	  setTimeout(showContent, 2000);
+	  setTimeout(showContent, 1000);
 	})
 	.catch(error => {
 	  // Handle error if any of the files fail to load
@@ -200,14 +211,11 @@ function scheduleAudio(startTime, startPoint)
 {
 	console.log("AUDIO SCHEDULED");
   
+	playVideo('voxVid', startPoint + 0.15);
 	for (let i = 0; i < players.length; i++) {
 	  var elapsed = Tone.now() - startTime;
 	  const playerStartTime = startTime + elapsed;
 	  players[i].start(playerStartTime, startPoint);
-	  
-	  if (i === players.length - 1) {
-		playVideo('voxVid', startPoint + 0.15);
-	  }
 	}
 }
 
@@ -402,39 +410,62 @@ function loadData(inputValue) {
 	  });
 }
 
-function changeButtons() {
+function changeButtons(which) {
 	// Get the button container element
 	var buttonContainer = document.getElementById("bContainer");
+	var coolButton = document.getElementsByClassName("cool-button");
 
-	// Set the CSS properties
-	buttonContainer.style.backgroundColor = "transparent";
-	buttonContainer.style.textAlign = "left";
-	buttonContainer.style.position = "fixed";
-	buttonContainer.style.top = "0";
-	buttonContainer.style.left = "0";
-	// buttonContainer.style.right = "0";
-	buttonContainer.style.flexDirection = "column";
+	if (which == 1)
+	{
+		// Set the CSS properties
+		for (i = 0; i < coolButton.length; i++)
+			coolButton[i].style.backgroundColor = "transparent";
+		buttonContainer.style.textAlign = "left";
+		buttonContainer.style.position = "fixed";
+		buttonContainer.style.top = "0";
+		buttonContainer.style.left = "0";
+		// buttonContainer.style.right = "0";
+		buttonContainer.style.flexDirection = "column";
+		buttonContainer.style.paddingTop = "0";
+	}
+	else
+	{
+		// Set the CSS properties
+		for (i = 0; i < coolButton.length; i++)
+			coolButton[i].style.backgroundColor = "rgb(78, 114, 123)";
+		buttonContainer.style.textAlign = "left";
+		buttonContainer.style.position = "relative";
+		buttonContainer.style.paddingTop = "40px";
+		// buttonContainer.style.right = "0";
+		buttonContainer.style.flexDirection = "row";
+
+	}
 }
 
 function updateImageParameters() {
     var container = document.getElementById('content');
     var gifCont = document.getElementsByClassName('gif-container');
-	
+	var vidCont = document.getElementById('vidCont');
+
 	if (container.offsetHeight > container.offsetWidth) {
-		console.log("HELLO!");
+		changeButtons(1);
 		// Change parameters for height > width
 		for (let i = 0; i < gifCont.length; i++)
 		{
 	  		gifCont[i].style.width = '48%';
       		gifCont[i].style.height = '28vh';
 		}
+		vidCont.style.width = '48%';
+      	vidCont.style.height = '28vh';
     } else {
-		changeButtons();
+		changeButtons(2);
 		for (let i = 0; i < gifCont.length; i++)
 		{
 	  		gifCont[i].style.width = '32%';
       		gifCont[i].style.height = '40vh';
 		}
+		vidCont.style.width = '32%';
+      	vidCont.style.height = '40vh';
     }
   }
 
