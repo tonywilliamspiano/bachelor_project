@@ -28,13 +28,22 @@ function showContent() {
 }
 
 //create overlay with "click to play"
-var overlay = document.getElementById("overlay");
+var normal = document.getElementById("normalText");
+var tutorial = document.getElementById("tutorialText");
 
-overlay.addEventListener("click", function() {
+
+normal.addEventListener("click", function() {
   // Hide the overlay when clicked
   overlay.style.display = "none";
   toneStart(0);
 });
+
+tutorial.addEventListener("click", function() {
+	// Hide the overlay when clicked
+	overlay.style.display = "none";
+	startTutorial();
+  });
+  
 
 //makes selected button light up
 function activateButton(index) {
