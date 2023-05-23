@@ -15,18 +15,21 @@ var volumes = [];
 
 function loadAudios() {
 	Tone.start();
-	var loadingScreen = document.getElementById("loading-screen");
+	var loadingScreen = document.getElementById("loading-message");
 	loadingScreen.textContent = "Loading audios...";
-	console.log("about to wait");
-	waitForPromises()
-		.then(() => {
-		// Code to be executed after waitForPromises has finished
-		showContent();
-	})
-	.catch(error => {
-    	// Handle any errors that occurred during waitForPromises
-    	console.log("Error:");
-	});
+	loadingScreen.onclick = null;
+	setTimeout(() => { 
+		console.log("about to wait");
+		waitForPromises()
+			.then(() => {
+			// Code to be executed after waitForPromises has finished
+			setTimeout(showContent, 3000);
+		})
+		.catch(error => {
+	    	// Handle any errors that occurred during waitForPromises
+	    	console.log("Error:");
+		});
+	}, 0);
 }
 
 async function waitForPromises() {
@@ -43,6 +46,18 @@ async function waitForPromises() {
 function getPromises() {
 	var audioPromise = Promise.all(audioFiles.map(file => Tone.loaded(file)))
 	  .then(() => {
+		console.log("in promise chain");
+		for (let i = 0; i < audioFiles.length; i++) {
+		  const player = new Tone.Player(audioFiles[i]);
+		  players.push(player);
+  
+		  const volume = new Tone.Gain();
+		  volumes.push(volume);
+  
+		  player.connect(volume);
+		  volume.connect(Tone.Destination);
+		  console.log("player loaded: ", i);
+		}
 		console.log("Audio promise has been fulfilled.");
 	  })
 	  .catch(error => {
@@ -62,23 +77,12 @@ function getPromises() {
 		  voxVid.onerror = reject;
 		}
 	});
-  
+
 	return Promise.all([audioPromise, videoPromise])
-	  .then(() => {
-		console.log("in promise chain");
-		for (let i = 0; i < audioFiles.length; i++) {
-		  const player = new Tone.Player(audioFiles[i]);
-		  players.push(player);
-  
-		  const volume = new Tone.Gain();
-		  volumes.push(volume);
-  
-		  player.connect(volume);
-		  volume.connect(Tone.Destination);
-		  console.log("player loaded: ", i);
-		}
-	  })
-	  .catch(error => {
-		console.error("Error loading files:", error);
-	  });
-  }
+    .then(() => {
+      console.log("All promises have been fulfilled.");
+    })
+    .catch(error => {
+      console.error("Error loading files:", error);
+    }); 
+}
