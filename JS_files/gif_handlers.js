@@ -20,7 +20,7 @@ function putGIFs()
 	for (i = 0; i < instrumentNames.length; i++)
 	{
 		newGIF = document.getElementById(instrumentNames[i]);
-		newGIF.src = "/siehst_du/content/gifs/" + instrumentArrays[i][currentSongPart];
+		newGIF.src = "content/gifs/" + instrumentArrays[i][currentSongPart];
 		currentGIFs.push(newGIF);
 	}
 }

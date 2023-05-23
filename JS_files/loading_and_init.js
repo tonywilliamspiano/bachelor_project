@@ -42,36 +42,7 @@ async function waitForPromises() {
 
 
 function getPromises() {
-	var audioPromise = new Promise((resolve, reject) => {
-	  var buffersLoaded = 0;
-  
-	  function onBufferLoaded() {
-		console.log("Buffer loaded", buffersLoaded);
-		buffersLoaded++;
-		if (buffersLoaded === audioFiles.length) {
-		  console.log('All buffers have been loaded.');
-		  resolve();
-		}
-	  }
-  
-	  var bufferPromises = audioFiles.map(file => {
-		return new Promise((resolve, reject) => {
-		  var buffer = new Tone.Buffer(file, () => {
-			onBufferLoaded();
-			resolve();
-		  }, reject);
-		});
-	  });
-  
-	  Promise.all(bufferPromises)
-		.then(() => {
-		  console.log('All buffer promises resolved.');
-		})
-		.catch(error => {
-		  console.error('Error loading buffers:', error);
-		  reject(error);
-		});
-	});
+	var audioPromise = Promise.all(audioFiles.map(file => Tone.loaded(file)));
   
 	var videoPromise = new Promise((resolve, reject) => {
 	  console.log("in video promise");
