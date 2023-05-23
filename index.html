@@ -8,8 +8,8 @@
 			<div id="overlayText">Click to Play</div>
 		</div>
 		<div id="loading-screen">
-			<div class="loading-message">
-			  <p>Loading audios...</p>
+			<div class="loading-message" onclick="loadAudios()">
+			  <p>Click to load audios</p>
 			</div>
 		  </div>
 		<div id="content" style="display: none;">  
@@ -18,7 +18,7 @@
 				<img id="drums2" class="clickable-gif" src="content/gifs/Drums_V2_04.gif" alt="Click me to play audio">
 			</div>
 			<div id="vidCont" class="video-container">
-				<video id="voxVid" src="/content/Vox_small.mp4" type="video/mp4" preload="auto">
+				<video id="voxVid" src="content/Vox_small.mp4" type="video/mp4" preload="auto">
 				</video>
 			</div>
 			<div class="gif-container" onclick="toggleGIFs('bass', 'bass2'); muteSwitch(0)">

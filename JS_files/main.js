@@ -1,15 +1,3 @@
-var audioFiles = ['content/Bass_V1.mp3',
-'content/Bass_V2.mp3',
-'content/Drums_V1.mp3',	
-'content/Drums_V2.mp3',	
-'content/Git_V1.mp3',	
-'content/Git_V2.mp3',	
-'content/Horns_V1.mp3',	
-'content/Horns_V2.mp3',	
-'content/Rhodes_V1.mp3',
-'content/Rhodes_V2.mp3',
-'content/Vox.mp3'];
-
 var songPartNames = ['Intro',
 'Verse 1',
 'Verse 2',	
@@ -33,8 +21,6 @@ var instrumentNames = [
 	"rhodes2"
 ];
 var startTimes = [1.75, 26, 58, 79.5, 101.3, 138.6, 160, 202, 226];
-var players = [];
-var volumes = [];
 var initialized = 0;
 var intervalID;
 var counter = 0;
