@@ -1,13 +1,19 @@
 // Function to schedule audio playback
 function scheduleAudio(startTime, startPoint) 
 {
+	var error = 0;
 	console.log("AUDIO SCHEDULED");
   
 	playVideo('voxVid', startPoint + 0.15);
 	for (let i = 0; i < players.length; i++) {
 	  var elapsed = Tone.now() - startTime;
 	  const playerStartTime = startTime + elapsed;
-	  players[i].start(playerStartTime, startPoint);
+	  try {
+		players[i].start(playerStartTime, startPoint);
+	  } catch (error) {
+		  error = 1;
+		console.error('Error starting player:', i);
+	  }
 	}
 }
 

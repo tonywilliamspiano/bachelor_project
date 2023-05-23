@@ -85,7 +85,6 @@ function setUpSongPart(songPart)
 	activateButton(songPart);
 	// Start the Tone.Transport
 	Tone.Transport.start();
-	var startTime = Tone.now() + 0.1;
 	//schedule audio for playback
-	scheduleAudio(startTime, startTimes[songPart], songPart);
+	scheduleAudio(Tone.now(), startTimes[songPart], songPart);
 }
