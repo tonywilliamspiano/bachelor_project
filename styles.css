@@ -163,3 +163,38 @@ body {
   border-radius: 20px;
   overflow: hidden;
 }
+
+.tutorial-container {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+  background-color: #000000;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+
+.tutorial-container {
+  position: absolute;
+  margin-left: 10%;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+  width: 50%;
+  background-color: #000000;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+
+.tutorial-text {
+  font-weight: bold;
+  font-size: 50px;
+  color: rgb(163, 159, 159);
+}
+
+.next-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}

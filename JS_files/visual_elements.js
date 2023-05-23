@@ -35,7 +35,7 @@ var tutorial = document.getElementById("tutorialText");
 normal.addEventListener("click", function() {
   // Hide the overlay when clicked
   overlay.style.display = "none";
-  toneStart(0);
+  toneStart(0, 0);
 });
 
 tutorial.addEventListener("click", function() {

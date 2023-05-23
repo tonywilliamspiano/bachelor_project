@@ -107,4 +107,5 @@ function setUpSongPart(songPart, tutorial)
 	var startTime = Tone.now() + 0.1;
 	//schedule audio for playback
 	scheduleAudio(startTime, startTimes[songPart], songPart);
+	isPaused = 0;
 }
