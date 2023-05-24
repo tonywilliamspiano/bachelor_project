@@ -15,6 +15,7 @@ function scheduleAudio(startTime, startPoint)
 		console.error('Error starting player:', i);
 	  }
 	}
+	video.currentTime = Tone.now() - startTime;
 }
 
 function muteSwitch(trackIndex)
