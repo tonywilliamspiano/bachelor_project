@@ -25,6 +25,7 @@ var initialized = 0;
 var intervalID;
 var counter = 0;
 var currentSongPart = 0;
+var tutorial = 0;
 
 //Counts in 0.1 second increments to enable smooth changing of song parts
 function startCounter(index) {
@@ -34,7 +35,6 @@ function startCounter(index) {
 		if (counter >= startTimes[index + 1] - startTimes[index]) 
 		{
 			clearInterval(intervalID);
-			console.log("Counter reached next state");
 			activateButton(index + 1);
 			currentSongPart = index + 1;
 			putGIFs();
@@ -43,24 +43,26 @@ function startCounter(index) {
 	}, 100);
 }
 
+function printSaveStates()
+{
+	for (i = 0; i < saveStates.length; i++)
+		console.log(saveStates[i]);
+}
 //start tone on user action
 function toneStart(songPart) 
 {
+	console.log("TUTORIAL = ", tutorial);
+	printSaveStates();
 	currentSongPart = songPart;
 	putGIFs();
 	Tone.start();
-	if (initialized == 1)
-	{
-		goToSavedState(songPart);
-	}
-	setUpSongPart(songPart);
+	setUpSongPart(songPart, tutorial);
 }
 
 //Receives the songpart and does the rest of the work
-function setUpSongPart(songPart)
+function setUpSongPart(songPart, tutorial)
 {
-	putGIFs();
-	if (initialized == 0) {
+	if (initialized == 0 && tutorial == 0) {
 		for (let i = 0; i < players.length; i++) {
 			if (i % 2 == 1)
 			{
@@ -74,17 +76,20 @@ function setUpSongPart(songPart)
 		for (let i = 0; i < saveStates.length; i++) {
 			const subArray = saveStates[i];
 			for (let j = 0; j < subArray.length; j++) {
-			  if (j % 2 == 0) {
+				if (j % 2 == 0) {
 				subArray[j] = 1;
-			  }
+				}
 			}
-		  }
+		}
 		initialized = 1;
 	}
+	putGIFs();
+	goToSavedState(songPart);
 	//activate the corresponding song part button
 	activateButton(songPart);
 	// Start the Tone.Transport
 	Tone.Transport.start();
 	//schedule audio for playback
 	scheduleAudio(Tone.now(), startTimes[songPart], songPart);
+	isPaused = 0;
 }

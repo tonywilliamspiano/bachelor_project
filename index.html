@@ -5,13 +5,24 @@
 	</head>
 	<body>
 		<div id="overlay" style="display: none;">
-			<div id="overlayText">Click to play</div>
+			<div id="tutorialText" class="overlay-container top-container">
+				<span class="overlayText">Need a tutorial?</span>
+			</div>  
+			<div id="normalText" class="overlay-container bottom-container">
+				<span class="overlayText">Been here before?</span>
+			</div>
 		</div>
 		<div id="loading-screen">
 			<div id="loading-message" class="loading-message" onclick="loadAudios()">
 			  <p>Click to load audios</p>
 			</div>
-		  </div>
+		</div>
+		<div id="tutorialContainer" class="tutorial-container">
+			<span id="tText" class="tutorial-text">Click the gif to change instrument part</span>
+		</div>
+		<div class="next-button">
+			<button id="nextButton" class="cool-button" onclick=null>Next</button>
+		</div>
 		<div id="content" style="display: none;">  
 			<div class="gif-container" onclick="toggleGIFs('drums', 'drums2'); muteSwitch(2)">
 				<img id="drums" class="clickable-gif" src="content/gifs/Drums_V1_04.gif" alt="Click me to play audio">
@@ -40,15 +51,15 @@
 			<br>
 			</br>
 			<div id="bContainer" class="button-container">
-				<button id="button0" class="cool-button" onclick="toneStart(0)">Intro</button>
-				<button id="button1" class="cool-button" onclick="toneStart(1)">Verse 1</button>
-				<button id="button2" class="cool-button" onclick="toneStart(2)">Verse 2</button>
-				<button id="button3" class="cool-button" onclick="toneStart(3)">Chorus 1</button>
-				<button id="button4" class="cool-button" onclick="toneStart(4)">Verse 3</button>
-				<button id="button5" class="cool-button" onclick="toneStart(5)">Chorus 2</button>
-				<button id="button6" class="cool-button" onclick="toneStart(6)">Bridge</button>
-				<button id="button7" class="cool-button" onclick="toneStart(7)">Instrumental</button>
-				<button id="button8" class="cool-button" onclick="toneStart(8)">Outro</button>
+				<button id="button0" class="cool-button" onclick="toneStart(0, 0)">Intro</button>
+				<button id="button1" class="cool-button" onclick="toneStart(1, 0)">Verse 1</button>
+				<button id="button2" class="cool-button" onclick="toneStart(2, 0)">Verse 2</button>
+				<button id="button3" class="cool-button" onclick="toneStart(3, 0)">Chorus 1</button>
+				<button id="button4" class="cool-button" onclick="toneStart(4, 0)">Verse 3</button>
+				<button id="button5" class="cool-button" onclick="toneStart(5, 0)">Chorus 2</button>
+				<button id="button6" class="cool-button" onclick="toneStart(6, 0)">Bridge</button>
+				<button id="button7" class="cool-button" onclick="toneStart(7, 0)">Instrumental</button>
+				<button id="button8" class="cool-button" onclick="toneStart(8, 0)">Outro</button>
 				<button id="saveButton" class="cool-button" onclick="exportArray()">Export Audio</button>
 				<form id="myForm">
 					<input type="text" id="myInput" placeholder="Enter your code">
@@ -64,4 +75,5 @@
 	<script src="JS_files/gif_handlers.js"></script>
 	<script src="JS_files/export_and_save.js"></script>
 	<script src="JS_files/loading_and_init.js"></script>
+	<script src="JS_files/tutorial.js"></script>
 </html>

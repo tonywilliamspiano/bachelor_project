@@ -1,21 +1,46 @@
-var saveStates = Array.from({ length: 9 }, () => Array(10).fill(0));
+var saveStates = Array.from({ length: 9 }, () => Array(11).fill(0));
+
+//get data from JSON file from user
+function loadData(inputValue) {
+	var fileName = "saved_versions/" + inputValue + '.json';  
+	// Load the JSON file
+	fetch(fileName)
+	  .then(function(response) {
+		if (!response.ok) {
+		  throw new Error('Failed to load JSON file');
+		}
+		return response.json();
+	  })
+	  .then(function(data) {
+		saveStates = data.array;
+		initialized = 1;
+		var oText = document.getElementById("overlayText");
+		oText.textContent = "Saved State Loaded, Click to Play";
+		showContent();
+		putGIFs();
+		pauseTracks();
+	  })
+	  .catch(function(error) {
+		console.log(error);
+	  });
+}
 
 //Return to the user's saved state at the songpart 'index'
 function goToSavedState(index)
 {
-	console.log("Here");
 	for (i = 0; i < saveStates[index].length; i++)
 	{
 		if (saveStates[index][i] == 0) 
 		{
-			console.log('muting track', i);
 			muteTrack(i);
-			currentGIFs[i].style.display = "none";
+			if (i < saveStates[index].length - 1)
+				currentGIFs[i].style.display = "none";
 		}
-		else 
+		else
 		{
 			unmuteTrack(i);
-			currentGIFs[i].style.display = "block";
+			if (i < saveStates[index].length - 1)
+				currentGIFs[i].style.display = "block";
 		}
 	}
 }

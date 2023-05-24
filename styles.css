@@ -4,7 +4,6 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -13,16 +12,7 @@
     opacity: 1;
     transition: opacity 1.5s ease-in-out;
 }
-#overlayText {
-    position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    font-family: "Helvetica Neue", Arial, sans-serif;
-      font-weight: bold;
-      font-size: 78px;
-      color: rgb(163, 159, 159);
-}
+
 #loading-screen {
   position: fixed;
   top: 0;
@@ -52,6 +42,27 @@
 #content {
   display: flex;
   width: 100%;
+}
+
+.overlay-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+  background-color: #000000;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+
+.overlay-container:hover {
+  background-color: #573d16;
+}
+
+.overlayText {
+  font-weight: bold;
+  text-align: center;
+  font-size: 78px;
+  color: rgb(163, 159, 159);
 }
 
 .loading-message {
@@ -129,16 +140,15 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  display: none;
 }
 .video-container {
   margin: 0;
   padding: 0;
   user-select: none;
-     display: inline-block;
-    width: 32%;
-    height: 40vh;
-    overflow: hidden;
+  display: inline-block;
+  width: 32%;
+  height: 40vh;
+  overflow: hidden;
 }
 .video-container video {
   width: 100%;
@@ -152,4 +162,40 @@ body {
   position: relative;
   border-radius: 20px;
   overflow: hidden;
+}
+
+.tutorial-container {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+  background-color: #000000;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+
+.tutorial-container {
+  position: absolute;
+  margin-left: 10%;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+  width: 50%;
+  background-color: #000000;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+
+.tutorial-text {
+  font-weight: bold;
+  font-size: 40px;
+  color: rgb(163, 159, 159);
+  text-align: center;
+}
+
+.next-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
 }

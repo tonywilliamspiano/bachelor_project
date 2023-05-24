@@ -28,13 +28,22 @@ function showContent() {
 }
 
 //create overlay with "click to play"
-var overlay = document.getElementById("overlay");
+var normal = document.getElementById("normalText");
+var tutorial = document.getElementById("tutorialText");
 
-overlay.addEventListener("click", function() {
+
+normal.addEventListener("click", function() {
   // Hide the overlay when clicked
   overlay.style.display = "none";
-  toneStart(0);
+  toneStart(0, 0);
 });
+
+tutorial.addEventListener("click", function() {
+	// Hide the overlay when clicked
+	overlay.style.display = "none";
+	startTutorial();
+  });
+  
 
 //makes selected button light up
 function activateButton(index) {
@@ -59,32 +68,6 @@ inputElement.addEventListener('keydown', function(event) {
 	loadData(inputValue);
   }
 });
-
-//get data from JSON file from user
-function loadData(inputValue) {
-	var fileName = "saved_versions/" + inputValue + '.json';  
-	console.log("file name is ", fileName);
-	// Load the JSON file
-	fetch(fileName)
-	  .then(function(response) {
-		if (!response.ok) {
-		  throw new Error('Failed to load JSON file');
-		}
-		return response.json();
-	  })
-	  .then(function(data) {
-		saveStates = data.array;
-		initialized = 1;
-		var oText = document.getElementById("overlayText");
-		oText.textContent = "Saved State Loaded, Click to Play";
-		showContent();
-		putGIFs();
-		pauseTracks();
-	  })
-	  .catch(function(error) {
-		console.log(error);
-	  });
-}
 
 function changeButtons(which) {
 	// Get the button container element
