@@ -176,7 +176,7 @@ body {
   align-items: center;
   height: 50vh;
   width: 50%;
-  background-color: #000000;
+  background-color: black;
   transition: background-color 0.3s ease;
   cursor: pointer;
 }
@@ -192,4 +192,14 @@ body {
   position: fixed;
   bottom: 20px;
   right: 20px;
+}
+
+#nextButton {
+  font-size: 30px;
+  color: rgb(163, 159, 159);
+}
+
+#tText {
+  margin-left: 5px;
+  margin-right: 5px;
 }

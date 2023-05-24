@@ -20,7 +20,7 @@ var instrumentNames = [
 	"rhodes",
 	"rhodes2"
 ];
-var startTimes = [1.75, 26, 58, 79.5, 101.3, 138.6, 160, 202, 226];
+var startTimes = [2.45, 26.4, 58.73, 79.98, 101.3, 138.65, 160, 202.5, 226.45];
 var initialized = 0;
 var intervalID;
 var counter = 0;
@@ -76,9 +76,10 @@ function setUpSongPart(songPart, is_tutorial)
 		for (let i = 0; i < saveStates.length; i++) {
 			const subArray = saveStates[i];
 			for (let j = 0; j < subArray.length; j++) {
-				if (j % 2 == 0) {
-				subArray[j] = 1;
-				}
+				if (j % 2 == 0)
+					subArray[j] = 1;
+				else
+					subArray[j] = 0;
 			}
 		}
 		initialized = 1;
