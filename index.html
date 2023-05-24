@@ -14,11 +14,11 @@
 		</div>
 		<div id="loading-screen">
 			<div id="loading-message" class="loading-message" onclick="loadAudios()">
-			  <p>Click to load audios</p>
+			  <span id="loadingText">Click to load audios</p>
 			</div>
 		</div>
 		<div id="tutorialContainer" class="tutorial-container">
-			<span id="tText" class="tutorial-text">Click the gif to change instrument part</span>
+			<span id="tText" class="tutorial-text"></span>
 		</div>
 		<div class="next-button">
 			<button id="nextButton" class="cool-button" onclick=null>Next</button>
@@ -48,8 +48,6 @@
 				<img id="horns" class="clickable-gif" src="content/gifs/Horns_V1_01.gif" alt="Click me to play audio">
 				<img id="horns2" class="clickable-gif" src="content/gifs/Horns_V2_04.gif" alt="Click me to play audio">
 			</div>
-			<br>
-			</br>
 			<div id="bContainer" class="button-container">
 				<button id="button0" class="cool-button" onclick="toneStart(0, 0)">Intro</button>
 				<button id="button1" class="cool-button" onclick="toneStart(1, 0)">Verse 1</button>
@@ -59,12 +57,13 @@
 				<button id="button5" class="cool-button" onclick="toneStart(5, 0)">Chorus 2</button>
 				<button id="button6" class="cool-button" onclick="toneStart(6, 0)">Bridge</button>
 				<button id="button7" class="cool-button" onclick="toneStart(7, 0)">Instrumental</button>
-				<button id="button8" class="cool-button" onclick="toneStart(8, 0)">Outro</button>
-				<button id="saveButton" class="cool-button" onclick="exportArray()">Export Audio</button>
-				<form id="myForm">
-					<input type="text" id="myInput" placeholder="Enter your code">
-				</form>				  
+				<button id="button8" class="cool-button" onclick="toneStart(8, 0)">Outro</button>		  
 			</div>
+			<button id="saveButton" style="display: none;" class="cool-button" onclick=null>Export Audio</button>
+			<!-- <button id="saveButton" class="cool-button" onclick="exportArray()">Export Audio</button> -->
+			<form id="myForm" style="display: none;">
+				<input type="text" id="myInput" placeholder="Enter your code">
+			</form>		
 			<button id="pauseButton" class="cool-button" onclick="pauseTracks()">Pause/Play</button>
 		</div>
 	</body>

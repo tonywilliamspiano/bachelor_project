@@ -54,3 +54,14 @@ function resetGIFs() {
 		gifID.style.display = 'block';
 	}
 }
+
+function hideGIFs() {
+	var	gifID;
+	for (i = 0; i < gifOff.length; i++)
+	{
+		gifID = document.getElementById(gifOff[i]);
+		gifID.style.display = 'none';
+		gifID = document.getElementById(gifOn[i]);
+		gifID.style.display = 'none';
+	}
+}

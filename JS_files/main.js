@@ -85,6 +85,7 @@ function setUpSongPart(songPart, is_tutorial)
 	}
 	putGIFs();
 	goToSavedState(songPart);
+	resizeContent();
 	//activate the corresponding song part button
 	activateButton(songPart);
 	// Start the Tone.Transport

@@ -6,18 +6,53 @@ var tutorialArray = [[0,1,0,1,0,1,1,0,0,1,0],[1,0,0,1,0,1,1,0,1,0,0],[1,0,1,0,0,
 
 var nextButton = document.getElementById("nextButton");
 
+var tutorialMessages = [
+    ["Ever wondered what it's like to be a music producer and arranger?"], 
+    ["More than anything else, it comes down to good music taste and decision making."],
+    ["Producers have to choose between countless song versions and pick just the right one."],
+    ["Ready to try it yourself?"]
+];
+
+var currentMessage = 0;
+
 function startTutorial()
+{
+    var tText = document.getElementById("tText");
+
+    tText.textContent = tutorialMessages[currentMessage];
+    showText();
+    hideButtons();
+    disableGifs(0);
+    is_tutorial = 1;
+    hideGIFs();
+    nextButton.addEventListener("click", clickHandler0);
+}
+
+function clickHandler0() {
+    if (currentMessage == tutorialMessages.length - 1)    
+        startTutorial1();
+    else
+    {
+        currentMessage++;
+        var tText = document.getElementById("tText");
+        tText.textContent = tutorialMessages[currentMessage];
+    }
+
+}
+
+function startTutorial1()
 {
     var container = document.getElementById("tutorialContainer");
     var tText = document.getElementById("tText");
 
-    container.style.marginLeft = "33%";
-    container.style.marginTop = "0%";
-    container.style.width = "30%";
-    
+    midTutorial = 1;
+    resizeContent();
+    tText.textContent = "Click the gif to change instrument part";
     hideButtons();
-    is_tutorial = 1;
-
+    gifs[3].addEventListener("click", function() {
+        toggleGIFs('rhodes', 'rhodes2');
+        muteSwitch(8);
+    });
     video = document.getElementById("voxVid");
     voxVid.style.display = "none";
     saveStates[2][8] = 1;
@@ -25,6 +60,7 @@ function startTutorial()
     disableGifs(0);
     showText();
     nextButton.addEventListener("click", clickHandler1);
+    nextButton.removeEventListener("click", clickHandler0);
 }
 
 var gifs = document.getElementsByClassName("gif-container");
@@ -35,7 +71,6 @@ function startTutorial2()
     var tText = document.getElementById("tText");
 
     tText.textContent = "Change multiple instruments to build your favorite groove";
-    tText.style.fontSize = "30px";
     saveStates[2][2] = 1;
     saveStates[2][0] = 1;
     gifs[0].addEventListener("click", function() {
@@ -54,7 +89,7 @@ function startTutorial2()
 
 function clickHandler1()
 {
-       startTutorial2();
+      startTutorial2();
 }
 function clickHandler2()
 {
@@ -69,12 +104,7 @@ function startTutorial3() {
     var container = document.getElementById("tutorialContainer");
     var tText = document.getElementById("tText");
 
-    container.style.marginLeft = "33%";
-    container.style.marginTop = "0%";
-    container.style.width = "30%";
-    tText.textContent = "Click the buttons below to move between different song parts and double check your work";
-    tText.style.fontSize = "30px";
-
+    tText.textContent = "Click on the song parts below to double check your work";
     gifs[4].addEventListener("click", function() {
         toggleGIFs('horns', 'horns2');
         muteSwitch(6);
@@ -93,23 +123,29 @@ function startTutorial3() {
 
 function endTutorial()
 {
+    var container = document.getElementById("tutorialContainer");
     var tText = document.getElementById("tText");
     var video = document.getElementById("voxVid");
+    var load = document.getElementById("loading-screen");
+	var loadingScreen = document.getElementById("loading-message");
 
+    midTutorial = 0; 
+    container.style.display = "none";
+
+    showAll();
     video.style.display = "inline-block";
     video.src = "content/Vox_small.mp4";
     tText.style.display = "none";
     is_tutorial = 0;
     nextButton.removeEventListener("click", clickHandler3);
     pauseTracks();
-    // console.log("ENDING TUTORIAL");
-    load = document.getElementById("loading-screen");
-    text = document.getElementById("loading-message");
-
-    text.onclick = null;
+	loadingScreen.textContent = "Looks like you're ready! Click to play";
+    loadingScreen.style.fontSize = "40px";
+    loadingScreen.style.marginTop = "10%";
+    loadingScreen.onclick = null;
     load.addEventListener("click", function () {
         toneStart(0, 0);
-        text.style.display = "none";
+        loadingScreen.style.display = "none";
         load.style.display = "none";
     });
     load.style.display = "block";
@@ -121,7 +157,6 @@ function disableGifs(state) {
     var gifs = document.getElementsByClassName("gif-container");
     for (i = 0; i < gifs.length; i++)
     {
-        if (tutorialStates[state][i] == 0)
             gifs[i].onclick = null;
     }
 }
@@ -162,8 +197,11 @@ function showAll()
 {
     for (i = 0; i < buttons.length; i++)
     {
-        buttons[i].style.display = "block";
+        buttons[i].style.display = "inline-block";
     }
+    var bContainer = document.getElementById("bContainer");
+    
+    bContainer.style.width = "100%";
     var pauseButton = document.getElementById("pauseButton");
     pauseButton.style.display = "block";
     var input = document.getElementById("myInput");

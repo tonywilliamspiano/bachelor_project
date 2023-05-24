@@ -13,6 +13,30 @@ buttons.push(document.getElementById("button6"));
 buttons.push(document.getElementById("button7"));
 buttons.push(document.getElementById("button8"));
 
+var buttonTextLong = [
+	["Intro"],
+	["Verse 1"],
+	["Verse 2"],
+	["Chorus 1"],
+	["Verse 3"],
+	["Chorus 2"],
+	["Bridge"],
+	["Instrumental"],
+	["Outro"]
+];
+
+var buttonTextShort = [
+	["I"],
+	["V1"],
+	["V2"],
+	["C1"],
+	["V3"],
+	["C2"],
+	["B"],
+	["Instr."],
+	["O"]
+];
+
 //initializing the screen and showing correct content
 function showContent() {
 	var loadingScreen = document.getElementById("loading-screen");
@@ -75,22 +99,31 @@ function changeButtons(which) {
 
 	if (which == 1)
 	{
-		// Set the CSS properties
-		// for (i = 0; i < coolButton.length; i++)
-		// {
-		// 	coolButton[i].style.backgroundColor = "transparent";
-		// 	coolButton[i].style.pointer = "hover";
-		// }
-		buttonContainer.style.paddingTop = "10";
+		for (let i = 0; i < buttons.length; i++)
+		{	
+			if (i != currentSongPart || i == 7)
+			{
+				buttons[i].textContent = buttonTextShort[i];
+			}
+			buttons[i].addEventListener("mouseover", function() {
+				buttons[i].textContent = buttonTextLong[i];				
+				buttons[i].style.whiteSpace = "nowrap";
+				buttons[i].style.textAlign = "center";
+			});
+			buttons[i].addEventListener("mouseout", function() {
+				if (i != currentSongPart || i == 7)
+					buttons[i].textContent = buttonTextShort[i];
+			});
+		}
+		buttonContainer.style.paddingTop = "5";
+
 	}
 	else
 	{
-		// // Set the CSS properties
-		// for (i = 0; i < coolButton.length; i++)
-		// {	
-		// 	coolButton[i].style.backgroundColor = "rgb(78, 114, 123)";
-		// 	coolButton[i].style.pointer = "hover";
-		// }
+		for (let i = 0; i < buttons.length; i++)
+		{	
+			buttons[i].textContent = buttonTextLong[i];
+		}
 		buttonContainer.style.textAlign = "left";
 		buttonContainer.style.position = "relative";
 		buttonContainer.style.paddingTop = "40px";
@@ -98,6 +131,8 @@ function changeButtons(which) {
 		buttonContainer.style.flexDirection = "row";
 	}
 }
+
+var isWideScreen = 1;
 
 function resizeContent() {
     var container = document.getElementById('content');
@@ -112,6 +147,7 @@ function resizeContent() {
 	  		gifCont[i].style.width = '48%';
       		gifCont[i].style.height = '28vh';
 		}
+		isWideScreen = 0;
 		vidCont.style.width = '48%';
       	vidCont.style.height = '28vh';
     } else {
@@ -121,10 +157,36 @@ function resizeContent() {
 	  		gifCont[i].style.width = '32%';
       		gifCont[i].style.height = '40vh';
 		}
+		isWideScreen = 1;
 		vidCont.style.width = '32%';
       	vidCont.style.height = '40vh';
     }
+	changeTutorialScreen();
   }
+
+var midTutorial = 0;
+function changeTutorialScreen() {
+	if (midTutorial == 0)
+		return;
+	console.log("iswidescreen: ", isWideScreen);
+	var tContainer = document.getElementById("tutorialContainer");
+    var tText = document.getElementById("tText");    // Update container styles
+	
+	tContainer.style.position = "fixed";
+	tContainer.style.transform = "translate(-50%, -50%)";
+	if (isWideScreen == 1)
+	{
+		tContainer.style.left = "48%";
+		tContainer.style.top = "20%"; // Adjust the top position for centering
+		tContainer.style.width = "30%";
+	}
+	if (isWideScreen == 0)
+	{
+		tContainer.style.left = "75%";
+		tContainer.style.top = "13%";
+		tText.style.fontSize = "25px";
+	}
+}
 
 // Call the function initially
 resizeContent();
