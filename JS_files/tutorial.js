@@ -8,8 +8,15 @@ var nextButton = document.getElementById("nextButton");
 
 function startTutorial()
 {
+    var container = document.getElementById("tutorialContainer");
+    var tText = document.getElementById("tText");
+
+    container.style.marginLeft = "33%";
+    container.style.marginTop = "0%";
+    container.style.width = "30%";
+    
     hideButtons();
-    tutorial = 1;
+    is_tutorial = 1;
 
     video = document.getElementById("voxVid");
     voxVid.style.display = "none";
@@ -17,19 +24,16 @@ function startTutorial()
     toneStart(2, 1);
     disableGifs(0);
     showText();
-    nextButton.addEventListener("click", function() {
-        startTutorial2();
-    });}
+    nextButton.addEventListener("click", clickHandler1);
+}
+
+var gifs = document.getElementsByClassName("gif-container");
 
 function startTutorial2()
 {
-    var gifs = document.getElementsByClassName("gif-container");
-    var container = document.getElementById("tutorialContainer");
+    console.log("Tutorial 2 start");
     var tText = document.getElementById("tText");
 
-    container.style.marginLeft = "33%";
-    container.style.marginTop = "0%";
-    container.style.width = "30%";
     tText.textContent = "Change multiple instruments to build your favorite groove";
     tText.style.fontSize = "30px";
     saveStates[2][2] = 1;
@@ -44,12 +48,24 @@ function startTutorial2()
     });
     // turnOffButtons(1);
     toneStart(2, 1);
-    nextButton.addEventListener("click", function() {
-        startTutorial3(gifs);
-    });
+    nextButton.addEventListener("click", clickHandler2);
+    nextButton.removeEventListener("click", clickHandler1);
 }
 
-function startTutorial3(gifs) {
+function clickHandler1()
+{
+       startTutorial2();
+}
+function clickHandler2()
+{
+       startTutorial3();
+}
+function clickHandler3()
+{
+       endTutorial();
+}
+
+function startTutorial3() {
     var container = document.getElementById("tutorialContainer");
     var tText = document.getElementById("tText");
 
@@ -61,22 +77,44 @@ function startTutorial3(gifs) {
 
     gifs[4].addEventListener("click", function() {
         toggleGIFs('horns', 'horns2');
-        muteSwitch(0);
+        muteSwitch(6);
     });
     gifs[2].addEventListener("click", function() {
         toggleGIFs('git', 'git2');
-        muteSwitch(0);
+        muteSwitch(4);
     });
-    // for (i = 0; i < tArray.length; i++)
-    // {
-    //     console.log(tArray[i]);
-    // }
+
     saveStates = tutorialArray;
     showButtons();
     toneStart(2, 1);
-    nextButton.addEventListener("click", function() {
-        
+    nextButton.addEventListener("click", clickHandler3);
+    nextButton.removeEventListener("click", clickHandler2);
+}
+
+function endTutorial()
+{
+    var tText = document.getElementById("tText");
+    var video = document.getElementById("voxVid");
+
+    video.style.display = "inline-block";
+    video.src = "content/Vox_small.mp4";
+    tText.style.display = "none";
+    is_tutorial = 0;
+    nextButton.removeEventListener("click", clickHandler3);
+    pauseTracks();
+    // console.log("ENDING TUTORIAL");
+    load = document.getElementById("loading-screen");
+    text = document.getElementById("loading-message");
+
+    text.onclick = null;
+    load.addEventListener("click", function () {
+        toneStart(0, 0);
+        text.style.display = "none";
+        load.style.display = "none";
     });
+    load.style.display = "block";
+
+    // showContent();
 }
 
 function disableGifs(state) {
@@ -105,18 +143,19 @@ function hideButtons()
 function showButtons()
 {
     var video = document.getElementById("voxVid");
+    var bContainer = document.getElementById("bContainer");
 
     video.style.display = "none";
-    for (i = 0; i < buttons.length; i++)
+    for (i = 0; i < buttons.length - 5; i++)
     {
         buttons[i].style.display = "inline-block";
+        buttons[i].style.zIndex = "100";
     }
     var pauseButton = document.getElementById("pauseButton");
     pauseButton.style.display = "block";
-    var input = document.getElementById("myInput");
-    input.style.display = "none";
-    var save = document.getElementById("saveButton");
-    save.style.display = "none";
+    nextButton.style.zIndex = "9999";
+    bContainer.style.width = "80%";
+    bContainer.style.zIndex = "100";
 }
 
 function showAll()

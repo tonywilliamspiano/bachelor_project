@@ -29,7 +29,7 @@ function showContent() {
 
 //create overlay with "click to play"
 var normal = document.getElementById("normalText");
-var tutorial = document.getElementById("tutorialText");
+var tutorialText = document.getElementById("tutorialText");
 
 
 normal.addEventListener("click", function() {
@@ -38,7 +38,7 @@ normal.addEventListener("click", function() {
   toneStart(0, 0);
 });
 
-tutorial.addEventListener("click", function() {
+tutorialText.addEventListener("click", function() {
 	// Hide the overlay when clicked
 	overlay.style.display = "none";
 	startTutorial();
@@ -63,7 +63,6 @@ inputElement.addEventListener('keydown', function(event) {
   if (event.key === 'Enter') {
     event.preventDefault(); // Prevent the default newline behavior
     var inputValue = inputElement.value;
-    console.log('Input Value:', inputValue);
     inputElement.value = ''; // Clear the input field
 	loadData(inputValue);
   }

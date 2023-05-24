@@ -18,7 +18,6 @@ function loadAudios() {
 	var loadingScreen = document.getElementById("loading-message");
 	loadingScreen.textContent = "Loading audios...";
 	loadingScreen.onclick = null;
-	console.log("about to wait");
 	waitForPromises()
 		.then(() => {
 		// Code to be executed after waitForPromises has finished
@@ -33,7 +32,6 @@ function loadAudios() {
 async function waitForPromises() {
 	try {
 	  await getPromises();
-	  console.log("getPromises completed");
 	} catch (error) {
 	  console.error("Error:", error);
 	  throw error; // Re-throw the error to reject the promise
@@ -45,7 +43,6 @@ function getPromises() {
 	var audioPromise = Promise.all(audioFiles.map(file => Tone.loaded(file)));
   
 	var videoPromise = new Promise((resolve, reject) => {
-	  console.log("in video promise");
 	  var voxVid = document.getElementById("voxVid");
   
 	  if (voxVid.readyState >= 4) {
@@ -60,7 +57,6 @@ function getPromises() {
   
 	return Promise.all([audioPromise, videoPromise])
 	  .then(() => {
-		console.log("in promise chain");
 		for (let i = 0; i < audioFiles.length; i++) {
 		  const player = new Tone.Player(audioFiles[i]);
 		  players.push(player);
@@ -70,7 +66,6 @@ function getPromises() {
   
 		  player.connect(volume);
 		  volume.connect(Tone.Destination);
-		  console.log("player loaded: ", i);
 		}
 		return waitForPlayersLoaded();
 	  })

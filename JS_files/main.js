@@ -25,7 +25,7 @@ var initialized = 0;
 var intervalID;
 var counter = 0;
 var currentSongPart = 0;
-var tutorial = 0;
+var is_tutorial = 0;
 
 //Counts in 0.1 second increments to enable smooth changing of song parts
 function startCounter(index) {
@@ -35,34 +35,34 @@ function startCounter(index) {
 		if (counter >= startTimes[index + 1] - startTimes[index]) 
 		{
 			clearInterval(intervalID);
-			activateButton(index + 1);
-			currentSongPart = index + 1;
-			putGIFs();
-			goToSavedState(index + 1);
+			if (is_tutorial == 0)
+			{
+				activateButton(index + 1);
+				currentSongPart = index + 1;
+				putGIFs();
+				goToSavedState(index + 1);
+			}
+			else
+				toneStart(index, 1);
 		  }
 	}, 100);
 }
 
-function printSaveStates()
-{
-	for (i = 0; i < saveStates.length; i++)
-		console.log(saveStates[i]);
-}
 //start tone on user action
 function toneStart(songPart) 
 {
-	console.log("TUTORIAL = ", tutorial);
-	printSaveStates();
 	currentSongPart = songPart;
 	putGIFs();
 	Tone.start();
-	setUpSongPart(songPart, tutorial);
+	setUpSongPart(songPart, is_tutorial);
+	if (is_tutorial == 0)
+		nextButton.style.display = "none";
 }
 
 //Receives the songpart and does the rest of the work
-function setUpSongPart(songPart, tutorial)
+function setUpSongPart(songPart, is_tutorial)
 {
-	if (initialized == 0 && tutorial == 0) {
+	if (initialized == 0 && is_tutorial == 0) {
 		for (let i = 0; i < players.length; i++) {
 			if (i % 2 == 1)
 			{

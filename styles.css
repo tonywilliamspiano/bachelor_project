@@ -97,6 +97,7 @@
 }
 
 .button-container {
+  z-index: 9000;
   user-select: none;
   padding-top: 20px;
   display: inline-block;
@@ -189,7 +190,7 @@ body {
 
 .tutorial-text {
   font-weight: bold;
-  font-size: 40px;
+  font-size: 30px;
   color: rgb(163, 159, 159);
   text-align: center;
 }

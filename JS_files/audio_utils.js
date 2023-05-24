@@ -2,10 +2,9 @@
 function scheduleAudio(startTime, startPoint) 
 {
 	var error = 0;
-	console.log("AUDIO SCHEDULED");
   
 	var video = document.getElementById('voxVid');
-	playVideo('voxVid', startPoint + 0.15);
+	playVideo(video, startPoint - 0.35);
 	for (let i = 0; i < players.length; i++) {
 	  var elapsed = Tone.now() - startTime;
 	  const playerStartTime = startTime + elapsed;
@@ -15,8 +14,8 @@ function scheduleAudio(startTime, startPoint)
 		  error = 1;
 		console.error('Error starting player:', i);
 	  }
+	video.currentTime = startPoint + elapsed - 0.35;
 	}
-	video.currentTime = Tone.now() - startTime;
 }
 
 function muteSwitch(trackIndex)
@@ -73,13 +72,10 @@ function pauseTracks() {
   	}
 }
 
-function playVideo(videoId, startTime) {
-	var video = document.getElementById(videoId);
-	if (video.src != null)
-	{
-		video.currentTime = startTime - 0.5;
-		video.play();
-	}
+function playVideo(video, startTime) {
+	console.log("startTime is", startTime);
+	video.currentTime = startTime;
+	video.play();
 }
 
 function pauseVideo(videoId) {
