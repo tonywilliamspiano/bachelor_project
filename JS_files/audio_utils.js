@@ -1,8 +1,6 @@
 // Function to schedule audio playback
 function scheduleAudio(startTime, startPoint) 
-{
-	console.log("AUDIO SCHEDULED");
-  
+{  
 	playVideo('voxVid', startPoint + 0.15);
 	for (let i = 0; i < players.length; i++) {
 	  var elapsed = Tone.now() - startTime;
@@ -30,14 +28,12 @@ function muteSwitch(trackIndex)
 
 // Function to mute a specific track
 function muteTrack(trackIndex) {
-	console.log("track muted: ", trackIndex);
 	saveStates[currentSongPart][trackIndex] = 0;
 	volumes[trackIndex].gain.value = 0; // Set the gain value to 0 to mute the track
  }
   
   // Function to unmute a specific track
 function unmuteTrack(trackIndex) {
-	console.log("track unmuted: ", trackIndex);
 	saveStates[currentSongPart][trackIndex] = 1;
 	volumes[trackIndex].gain.value = 1; // Set the gain value to 1 to unmute the track
 }
@@ -61,7 +57,6 @@ function pauseTracks() {
   	}
  	else {
 		startCounter(0, pauseTime);
-		console.log("pause time is ", pauseTime);
 		scheduleAudio(Tone.now(), pauseTime)
 		playVideo('voxVid', pauseTime);
     	isPaused = false;
@@ -70,8 +65,11 @@ function pauseTracks() {
 
 function playVideo(videoId, startTime) {
 	var video = document.getElementById(videoId);
-	video.currentTime = startTime - 0.5;
-	video.play();
+	if (video.src != null)
+	{
+		video.currentTime = startTime - 0.5;
+		video.play();
+	}
 }
 
 function pauseVideo(videoId) {

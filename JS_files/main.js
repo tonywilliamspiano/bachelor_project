@@ -39,6 +39,7 @@ var initialized = 0;
 var intervalID;
 var counter = 0;
 var currentSongPart = 0;
+var tutorial = 0;
 
 //Counts in 0.1 second increments to enable smooth changing of song parts
 function startCounter(index) {
@@ -48,7 +49,6 @@ function startCounter(index) {
 		if (counter >= startTimes[index + 1] - startTimes[index]) 
 		{
 			clearInterval(intervalID);
-			console.log("Counter reached next state");
 			activateButton(index + 1);
 			currentSongPart = index + 1;
 			putGIFs();
@@ -57,16 +57,19 @@ function startCounter(index) {
 	}, 100);
 }
 
-//start tone on user action
-function toneStart(songPart, tutorial) 
+function printSaveStates()
 {
+	for (i = 0; i < saveStates.length; i++)
+		console.log(saveStates[i]);
+}
+//start tone on user action
+function toneStart(songPart) 
+{
+	console.log("TUTORIAL = ", tutorial);
+	printSaveStates();
 	currentSongPart = songPart;
 	putGIFs();
 	Tone.start();
-	if (initialized == 1)
-	{
-		goToSavedState(songPart);
-	}
 	setUpSongPart(songPart, tutorial);
 }
 
@@ -92,14 +95,10 @@ function setUpSongPart(songPart, tutorial)
 				}
 			}
 		}
-	initialized = 1;
+		initialized = 1;
 	}
 	putGIFs();
 	goToSavedState(songPart);
-	for (i = 0; i < saveStates.length; i++)
-    {
-        console.log(saveStates[i]);
-    }
 	//activate the corresponding song part button
 	activateButton(songPart);
 	// Start the Tone.Transport

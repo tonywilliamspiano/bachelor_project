@@ -20,7 +20,6 @@ Promise.all([audioPromise, videoPromise])
 
 	  player.connect(volume);
 	  volume.connect(Tone.Destination);
-	  console.log("player loaded: ", i);
 	}
 
 	// All audio files and the video file are loaded, hide the loading screen and show the content

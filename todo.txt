@@ -17,7 +17,7 @@
 
 
 
-TUTORIAL: 
+TUTORIAL: Make it work on wide screen and narrow (wide first);
 
 1. Ever wondered what it's like to be a music producer and arranger? 
 

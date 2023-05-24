@@ -60,6 +60,7 @@
 
 .overlayText {
   font-weight: bold;
+  text-align: center;
   font-size: 78px;
   color: rgb(163, 159, 159);
 }
@@ -139,7 +140,6 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  display: none;
 }
 .video-container {
   margin: 0;
@@ -189,8 +189,9 @@ body {
 
 .tutorial-text {
   font-weight: bold;
-  font-size: 50px;
+  font-size: 40px;
   color: rgb(163, 159, 159);
+  text-align: center;
 }
 
 .next-button {

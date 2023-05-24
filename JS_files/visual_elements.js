@@ -69,32 +69,6 @@ inputElement.addEventListener('keydown', function(event) {
   }
 });
 
-//get data from JSON file from user
-function loadData(inputValue) {
-	var fileName = "saved_versions/" + inputValue + '.json';  
-	console.log("file name is ", fileName);
-	// Load the JSON file
-	fetch(fileName)
-	  .then(function(response) {
-		if (!response.ok) {
-		  throw new Error('Failed to load JSON file');
-		}
-		return response.json();
-	  })
-	  .then(function(data) {
-		saveStates = data.array;
-		initialized = 1;
-		var oText = document.getElementById("overlayText");
-		oText.textContent = "Saved State Loaded, Click to Play";
-		showContent();
-		putGIFs();
-		pauseTracks();
-	  })
-	  .catch(function(error) {
-		console.log(error);
-	  });
-}
-
 function changeButtons(which) {
 	// Get the button container element
 	var buttonContainer = document.getElementById("bContainer");
