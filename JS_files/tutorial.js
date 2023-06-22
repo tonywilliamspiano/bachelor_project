@@ -73,6 +73,7 @@ function startTutorial2()
     tText.textContent = "Change multiple instruments to build your favorite groove";
     saveStates[2][2] = 1;
     saveStates[2][0] = 1;
+    saveStates[2][8] = 1;
     gifs[0].addEventListener("click", function() {
         toggleGIFs('drums', 'drums2');
         muteSwitch(2);
